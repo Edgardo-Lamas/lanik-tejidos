@@ -545,8 +545,10 @@ const PIN = '1408' // Cambiar si se desea
     try {
       const res = await fetch('/api/dashboard/agente', { method: 'POST', signal: abortCtrl.signal })
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}))
-        document.getElementById('agente-body').innerHTML = `<p class="md-p" style="color:#EF4444">Error: ${err.error || 'No se pudo generar el análisis'}</p>`
+        const text = await res.text()
+        let errorMsg = `HTTP ${res.status}`
+        try { errorMsg = JSON.parse(text).error || errorMsg } catch {}
+        document.getElementById('agente-body').innerHTML = `<p class="md-p" style="color:#EF4444">Error: ${errorMsg}</p><p class="md-p" style="color:#374151;font-size:11px;margin-top:6px">${text.substring(0, 300)}</p>`
         return
       }
       const reader = res.body.getReader()
