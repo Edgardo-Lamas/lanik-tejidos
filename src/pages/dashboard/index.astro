@@ -226,7 +226,7 @@ const PIN = '1408' // Cambiar si se desea
     <div class="pin-logo">La<span>Nik</span></div>
     <p class="pin-sub">Panel de control · Acceso restringido</p>
     <input id="pin-input" class="pin-input" type="password" maxlength="4" placeholder="••••" autocomplete="off" inputmode="numeric" />
-    <button class="pin-btn" onclick="checkPin()">Ingresar</button>
+    <button class="pin-btn" id="pin-btn">Ingresar</button>
     <p class="pin-error" id="pin-error"></p>
   </div>
 </div>
@@ -244,7 +244,7 @@ const PIN = '1408' // Cambiar si se desea
       <div class="header-actions">
         <a href="/" target="_blank" rel="noopener" class="btn-ghost">Ver sitio ↗</a>
         <a href="https://vercel.com" target="_blank" rel="noopener" class="btn-ghost">Vercel ↗</a>
-        <button class="btn-ghost" onclick="logout()">Salir</button>
+        <button class="btn-ghost" id="logout-btn">Salir</button>
       </div>
     </div>
 
@@ -426,7 +426,7 @@ const PIN = '1408' // Cambiar si se desea
           <h2>Agente de Marketing</h2>
           <p>Analiza el catálogo real y propone acciones concretas para la semana</p>
         </div>
-        <button id="agente-btn" class="btn-primary" onclick="generarAnalisis()">
+        <button id="agente-btn" class="btn-primary">
           <svg id="agente-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
           Generar análisis
         </button>
@@ -435,7 +435,7 @@ const PIN = '1408' // Cambiar si se desea
       <div id="agente-result" style="display:none" class="agente-result">
         <div class="agente-result-header">
           <span id="agente-fecha" class="agente-result-title">Análisis</span>
-          <button onclick="copiarAnalisis()" id="copy-btn" class="btn-ghost" style="font-size:11px;padding:4px 10px">Copiar</button>
+          <button id="copy-btn" class="btn-ghost" style="font-size:11px;padding:4px 10px">Copiar</button>
         </div>
         <div id="agente-body" class="agente-body"></div>
       </div>
@@ -478,7 +478,9 @@ const PIN = '1408' // Cambiar si se desea
     location.reload()
   }
 
+  document.getElementById('pin-btn').addEventListener('click', checkPin)
   document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin() })
+  document.getElementById('logout-btn').addEventListener('click', () => { localStorage.removeItem(KEY); location.reload() })
 
   // Tabs
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -580,6 +582,9 @@ const PIN = '1408' // Cambiar si se desea
     btn.textContent = '✓ Copiado'
     setTimeout(() => { btn.textContent = 'Copiar' }, 2000)
   }
+
+  document.getElementById('agente-btn').addEventListener('click', generarAnalisis)
+  document.getElementById('copy-btn').addEventListener('click', copiarAnalisis)
 
   checkAuth()
 </script>
