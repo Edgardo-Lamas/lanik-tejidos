@@ -171,10 +171,10 @@ const PIN = '1408' // Cambiar si se desea
     /* Agente tab */
     .agente-header {
       background: #1C1C1E; border: 1px solid #2C2C2E; border-radius: 6px;
-      padding: 20px; display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
       gap: 16px; flex-wrap: wrap;
     }
-    .agente-header h2 { font-size: 13px; font-weight: 600; color: #F9FAFB; margin-bottom: 4px }
+    .agente-header h2 { font-size: 13px; font-weight: 600; color: #F9FAFB; margin-bottom: 3px }
     .agente-header p { font-size: 12px; color: #4B5563 }
     .btn-primary {
       display: flex; align-items: center; gap: 8px;
@@ -184,26 +184,81 @@ const PIN = '1408' // Cambiar si se desea
     }
     .btn-primary:hover { background: #D0563A }
     .btn-primary:disabled { background: #2C2C2E; color: #6B7280; cursor: not-allowed }
-    .agente-result {
+
+    /* Chat UI */
+    .chat-wrap {
       background: #1C1C1E; border: 1px solid #2C2C2E;
-      border-radius: 6px; overflow: hidden;
+      border-radius: 6px; display: flex; flex-direction: column;
+      height: 580px; overflow: hidden;
     }
-    .agente-result-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 16px; border-bottom: 1px solid #2C2C2E;
+    .chat-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 32px 24px; gap: 16px;
     }
-    .agente-result-title { font-size: 12px; font-weight: 600; color: #D1D5DB }
-    .agente-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 4px; line-height: 1.65 }
-    .agente-body .md-h2 { font-size: 13px; font-weight: 700; color: #F9FAFB; margin: 16px 0 6px }
-    .agente-body .md-li { font-size: 13px; color: #9CA3AF; padding-left: 12px; border-left: 2px solid #2C2C2E; margin: 2px 0 }
-    .agente-body .md-p { font-size: 13px; color: #D1D5DB }
-    .agente-empty {
-      background: #161618; border: 1px dashed #2C2C2E; border-radius: 6px;
-      padding: 48px 24px; text-align: center;
+    .chat-empty-title { font-size: 13px; color: #4B5563 }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 520px }
+    .chip {
+      padding: 7px 14px; border: 1px solid #2C2C2E; border-radius: 20px;
+      background: #161618; color: #9CA3AF; font-size: 12px; font-family: 'Inter', sans-serif;
+      cursor: pointer; transition: all 0.2s;
     }
-    .agente-empty p { font-size: 13px; color: #374151 }
+    .chip:hover { border-color: #B5432A; color: #F9FAFB; background: #2C1412 }
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 20px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px }
+    .chat-messages::-webkit-scrollbar-track { background: transparent }
+    .chat-messages::-webkit-scrollbar-thumb { background: #2C2C2E; border-radius: 2px }
+    .msg { max-width: 82%; display: flex; flex-direction: column; gap: 4px }
+    .msg-user { align-self: flex-end; align-items: flex-end }
+    .msg-agent { align-self: flex-start; align-items: flex-start }
+    .msg-bubble-user {
+      background: #B5432A; color: #fff; padding: 10px 14px;
+      border-radius: 16px 16px 4px 16px; font-size: 13px; line-height: 1.5;
+    }
+    .msg-bubble-agent {
+      background: #161618; border: 1px solid #2C2C2E; color: #D1D5DB;
+      padding: 12px 16px; border-radius: 16px 16px 16px 4px;
+      font-size: 13px; line-height: 1.65;
+    }
+    .msg-bubble-agent .md-h2 { font-size: 13px; font-weight: 700; color: #F9FAFB; margin: 12px 0 5px }
+    .msg-bubble-agent .md-h2:first-child { margin-top: 0 }
+    .msg-bubble-agent .md-li { color: #9CA3AF; padding-left: 12px; border-left: 2px solid #2C2C2E; margin: 3px 0 }
+    .msg-bubble-agent .md-p { color: #D1D5DB; margin: 2px 0 }
+    .msg-time { font-size: 10px; color: #374151 }
+    .msg-actions { display: flex; align-items: center; gap: 4px }
+    .msg-copy {
+      font-size: 10px; color: #374151; background: none; border: none;
+      cursor: pointer; padding: 2px 6px; border-radius: 3px;
+      font-family: 'Inter', sans-serif; transition: color 0.2s;
+    }
+    .msg-copy:hover { color: #9CA3AF }
+    .chat-input-area {
+      border-top: 1px solid #2C2C2E; padding: 12px 16px;
+      display: flex; gap: 8px; align-items: center;
+    }
+    .chat-input {
+      flex: 1; background: #161618; border: 1px solid #2C2C2E;
+      border-radius: 6px; padding: 10px 14px; color: #F9FAFB;
+      font-size: 13px; font-family: 'Inter', sans-serif; outline: none;
+      transition: border-color 0.2s;
+    }
+    .chat-input:focus { border-color: #3C3C3E }
+    .chat-input::placeholder { color: #374151 }
+    .chat-input:disabled { opacity: 0.5 }
+    .chat-send {
+      padding: 10px 16px; border-radius: 6px; border: none;
+      background: #B5432A; color: #fff; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s; white-space: nowrap;
+      display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    .chat-send:hover { background: #D0563A }
+    .chat-send:disabled { background: #2C2C2E; color: #4B5563; cursor: not-allowed }
     .cursor {
-      display: inline-block; width: 8px; height: 14px;
+      display: inline-block; width: 7px; height: 13px;
       background: #B5432A; border-radius: 1px;
       animation: blink 0.8s step-end infinite; margin-left: 2px; vertical-align: middle;
     }
@@ -423,26 +478,38 @@ const PIN = '1408' // Cambiar si se desea
 
       <div class="agente-header">
         <div>
-          <h2>Agente de Marketing</h2>
-          <p>Analiza el catálogo real y propone acciones concretas para la semana</p>
+          <h2>Agente LaNik ✦</h2>
+          <p>Especialista en catálogo, marketing y estrategia comercial · Conversación continua</p>
         </div>
-        <button id="agente-btn" class="btn-primary">
-          <svg id="agente-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          Generar análisis
-        </button>
+        <button id="chat-clear" class="btn-ghost">Limpiar chat</button>
       </div>
 
-      <div id="agente-result" style="display:none" class="agente-result">
-        <div class="agente-result-header">
-          <span id="agente-fecha" class="agente-result-title">Análisis</span>
-          <button id="copy-btn" class="btn-ghost" style="font-size:11px;padding:4px 10px">Copiar</button>
+      <div class="chat-wrap">
+        <!-- Empty state -->
+        <div id="chat-empty" class="chat-empty">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2C2C2E" stroke-width="1.5" style="margin-bottom:4px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <p class="chat-empty-title">¿En qué te puedo ayudar?</p>
+          <div class="chips">
+            <button class="chip" data-msg="Analizá el catálogo completo y decime qué acciones concretas tomar esta semana">📊 Análisis semanal</button>
+            <button class="chip" data-msg="Sugerí 5 ideas de contenido para Instagram esta semana, específicas para LaNik">📱 Ideas para Instagram</button>
+            <button class="chip" data-msg="¿Cuáles son los productos con mejor potencial de venta en este momento?">🎯 Mejor oportunidad</button>
+            <button class="chip" data-msg="Armame una estrategia de precios para las series limitadas y cómo comunicarlas">💰 Series limitadas</button>
+            <button class="chip" data-msg="¿Cómo mejorar el SEO del sitio lanik-tejidos.vercel.app para llegar a más clientes?">🔍 SEO</button>
+            <button class="chip" data-msg="Qué campañas de temporada conviene planificar para otoño/invierno en Buenos Aires">🍂 Temporada</button>
+          </div>
         </div>
-        <div id="agente-body" class="agente-body"></div>
-      </div>
 
-      <div id="agente-empty" class="agente-empty">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2C2C2E" stroke-width="2" style="margin-bottom:12px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        <p>Tocá "Generar análisis" para obtener recomendaciones basadas en el catálogo actual</p>
+        <!-- Messages -->
+        <div id="chat-messages" class="chat-messages" style="display:none"></div>
+
+        <!-- Input area -->
+        <div class="chat-input-area">
+          <input id="chat-input" class="chat-input" type="text" placeholder="Preguntá sobre catálogo, estrategia, marketing, Instagram…" autocomplete="off" />
+          <button id="chat-send" class="chat-send">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar
+          </button>
+        </div>
       </div>
 
     </div>
@@ -492,101 +559,175 @@ const PIN = '1408' // Cambiar si se desea
     })
   })
 
-  // Agente
-  let analisisTexto = ''
-  let isLoading = false
-  let abortCtrl = null
+  // ── Chat Agente ──
+  let chatMessages = []
+  let chatLoading = false
+  let chatAbort = null
 
-  function renderMarkdown(text) {
-    const el = document.getElementById('agente-body')
-    el.innerHTML = ''
-    const lines = text.split('\n')
-    lines.forEach(line => {
+  function renderMd(text) {
+    const div = document.createElement('div')
+    text.split('\n').forEach(line => {
       if (line.startsWith('## ')) {
         const p = document.createElement('p')
         p.className = 'md-h2'
-        p.textContent = line.replace('## ', '')
-        el.appendChild(p)
+        p.textContent = line.replace(/^##\s+/, '')
+        div.appendChild(p)
       } else if (line.startsWith('- ')) {
         const p = document.createElement('p')
         p.className = 'md-li'
-        p.textContent = line.replace('- ', '')
-        el.appendChild(p)
-      } else if (line.trim() === '') {
-        const d = document.createElement('div')
-        d.style.height = '4px'
-        el.appendChild(d)
-      } else {
+        p.textContent = line.replace(/^-\s+/, '')
+        div.appendChild(p)
+      } else if (line.trim()) {
         const p = document.createElement('p')
         p.className = 'md-p'
         p.textContent = line
-        el.appendChild(p)
+        div.appendChild(p)
       }
     })
+    return div
   }
 
-  async function generarAnalisis() {
-    if (isLoading) { abortCtrl?.abort(); return }
-    isLoading = true
-    analisisTexto = ''
+  function timeNow() {
+    return new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
+  }
 
-    const btn = document.getElementById('agente-btn')
-    const icon = document.getElementById('agente-icon')
-    btn.disabled = true
-    btn.innerHTML = '<svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0"/></svg> Analizando…'
+  function appendUserBubble(text) {
+    const msgs = document.getElementById('chat-messages')
+    const div = document.createElement('div')
+    div.className = 'msg msg-user'
+    const bubble = document.createElement('div')
+    bubble.className = 'msg-bubble-user'
+    bubble.textContent = text
+    const time = document.createElement('span')
+    time.className = 'msg-time'
+    time.textContent = timeNow()
+    div.appendChild(bubble)
+    div.appendChild(time)
+    msgs.appendChild(div)
+    msgs.scrollTop = msgs.scrollHeight
+  }
 
-    document.getElementById('agente-empty').style.display = 'none'
-    document.getElementById('agente-result').style.display = 'block'
-    document.getElementById('agente-body').innerHTML = '<span class="cursor"></span>'
-    document.getElementById('agente-fecha').textContent = 'Generando análisis…'
+  function appendAgentBubble() {
+    const msgs = document.getElementById('chat-messages')
+    const div = document.createElement('div')
+    div.className = 'msg msg-agent'
+    const bubble = document.createElement('div')
+    bubble.className = 'msg-bubble-agent'
+    bubble.innerHTML = '<span class="cursor"></span>'
+    const meta = document.createElement('div')
+    meta.className = 'msg-actions'
+    const time = document.createElement('span')
+    time.className = 'msg-time'
+    time.textContent = timeNow()
+    const copyBtn = document.createElement('button')
+    copyBtn.className = 'msg-copy'
+    copyBtn.textContent = 'Copiar'
+    meta.appendChild(time)
+    meta.appendChild(copyBtn)
+    div.appendChild(bubble)
+    div.appendChild(meta)
+    msgs.appendChild(div)
+    msgs.scrollTop = msgs.scrollHeight
+    return { bubble, copyBtn }
+  }
 
-    abortCtrl = new AbortController()
+  async function sendMessage(text) {
+    text = text.trim()
+    if (chatLoading || !text) return
+    chatLoading = true
+
+    document.getElementById('chat-empty').style.display = 'none'
+    document.getElementById('chat-messages').style.display = 'flex'
+
+    chatMessages.push({ role: 'user', content: text })
+    appendUserBubble(text)
+
+    const sendBtn = document.getElementById('chat-send')
+    const input = document.getElementById('chat-input')
+    sendBtn.disabled = true
+    input.disabled = true
+    input.value = ''
+
+    const { bubble, copyBtn } = appendAgentBubble()
+    let agentText = ''
+    chatAbort = new AbortController()
 
     try {
-      const res = await fetch('/api/dashboard/agente', { method: 'POST', signal: abortCtrl.signal })
+      const res = await fetch('/api/dashboard/agente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatMessages }),
+        signal: chatAbort.signal,
+      })
+
       if (!res.ok) {
-        const text = await res.text()
-        let errorMsg = `HTTP ${res.status}`
-        try { errorMsg = JSON.parse(text).error || errorMsg } catch {}
-        document.getElementById('agente-body').innerHTML = `<p class="md-p" style="color:#EF4444">Error: ${errorMsg}</p><p class="md-p" style="color:#374151;font-size:11px;margin-top:6px">${text.substring(0, 300)}</p>`
+        const raw = await res.text()
+        let msg = `Error ${res.status}`
+        try { msg = JSON.parse(raw).error || msg } catch {}
+        bubble.innerHTML = `<p class="md-p" style="color:#EF4444">${msg}</p>`
+        chatMessages.pop()
         return
       }
+
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
+      const chatMsgs = document.getElementById('chat-messages')
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
-        analisisTexto += decoder.decode(value, { stream: true })
-        renderMarkdown(analisisTexto)
-        // Add cursor at end
-        const cursor = document.createElement('span')
-        cursor.className = 'cursor'
-        document.getElementById('agente-body').appendChild(cursor)
+        agentText += decoder.decode(value, { stream: true })
+        bubble.innerHTML = ''
+        bubble.appendChild(renderMd(agentText))
+        const cur = document.createElement('span')
+        cur.className = 'cursor'
+        bubble.appendChild(cur)
+        chatMsgs.scrollTop = chatMsgs.scrollHeight
       }
-      renderMarkdown(analisisTexto)
-      const now = new Date().toLocaleString('es-AR', { day:'2-digit', month:'long', hour:'2-digit', minute:'2-digit' })
-      document.getElementById('agente-fecha').textContent = `Análisis generado · ${now}`
+
+      bubble.innerHTML = ''
+      bubble.appendChild(renderMd(agentText))
+      chatMessages.push({ role: 'assistant', content: agentText })
+
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(agentText)
+        copyBtn.textContent = '✓ Copiado'
+        setTimeout(() => { copyBtn.textContent = 'Copiar' }, 2000)
+      })
+
     } catch (err) {
       if (err.name !== 'AbortError') {
-        document.getElementById('agente-body').innerHTML = '<p class="md-p" style="color:#EF4444">Error de conexión. Intentá de nuevo.</p>'
+        bubble.innerHTML = '<p class="md-p" style="color:#EF4444">Error de conexión. Intentá de nuevo.</p>'
+        chatMessages.pop()
       }
     } finally {
-      isLoading = false
-      btn.disabled = false
-      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Generar análisis'
+      chatLoading = false
+      sendBtn.disabled = false
+      input.disabled = false
+      input.focus()
+      document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight
     }
   }
 
-  function copiarAnalisis() {
-    if (!analisisTexto) return
-    navigator.clipboard.writeText(analisisTexto)
-    const btn = document.getElementById('copy-btn')
-    btn.textContent = '✓ Copiado'
-    setTimeout(() => { btn.textContent = 'Copiar' }, 2000)
-  }
+  document.getElementById('chat-send').addEventListener('click', () => {
+    sendMessage(document.getElementById('chat-input').value)
+  })
 
-  document.getElementById('agente-btn').addEventListener('click', generarAnalisis)
-  document.getElementById('copy-btn').addEventListener('click', copiarAnalisis)
+  document.getElementById('chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(e.target.value) }
+  })
+
+  document.getElementById('chat-clear').addEventListener('click', () => {
+    chatMessages = []
+    chatLoading = false
+    chatAbort?.abort()
+    document.getElementById('chat-messages').innerHTML = ''
+    document.getElementById('chat-messages').style.display = 'none'
+    document.getElementById('chat-empty').style.display = 'flex'
+  })
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => sendMessage(chip.dataset.msg))
+  })
 
   checkAuth()
 </script>

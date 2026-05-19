@@ -4,16 +4,7 @@ import { gorras } from '../../../data/gorras'
 import { artesanias } from '../../../data/artesanias'
 import type { APIRoute } from 'astro'
 
-export const POST: APIRoute = async () => {
-  const apiKey = import.meta.env.ANTHROPIC_API_KEY
-
-  if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'ANTHROPIC_API_KEY no configurada en Vercel' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  }
-
+function buildContext(): string {
   const gorrasCtx = gorras
     .map(g => `- ${g.nombre} | ${g.badge} | $${g.precio.toLocaleString('es-AR')}`)
     .join('\n')
@@ -30,39 +21,41 @@ export const POST: APIRoute = async () => {
   artesanias.forEach(a => { categoriaCount[a.categoria] = (categoriaCount[a.categoria] || 0) + 1 })
   const catResumen = Object.entries(categoriaCount).map(([c, n]) => `${c}: ${n}`).join(', ')
 
-  const systemPrompt = `Sos el agente de gestión y marketing de LaNik, marca de tejidos artesanales de Buenos Aires fundada por Natalia Szpitalnik.
+  return `CATÁLOGO ACTUAL:
+GORRAS (${gorras.length} modelos): ${gorrasCtx}
+ARTESANÍAS (${artesanias.length} piezas — ${catResumen}): ${arteCtx}
+STOCK: Agotados: ${agotados.join(', ') || 'Ninguno'} | Limitadas: ${limitadas.join(', ')} | Encargo: ${encargos.join(', ')}`
+}
 
-Analizás el catálogo actual y das recomendaciones concretas y accionables. Tu tono es profesional pero cálido, en español argentino. Conocés la marca: Instagram @Laniktejidos, WhatsApp como canal de venta, Palermo Soho como contexto geográfico.`
+export const POST: APIRoute = async ({ request }) => {
+  const apiKey = import.meta.env.ANTHROPIC_API_KEY
 
-  const userMessage = `Analizá el estado del catálogo y dame recomendaciones para esta semana.
+  if (!apiKey) {
+    return new Response(JSON.stringify({ error: 'ANTHROPIC_API_KEY no configurada en Vercel' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
 
-GORRAS (${gorras.length} modelos):
-${gorrasCtx}
+  let body: { messages?: { role: string; content: string }[] }
+  try {
+    body = await request.json()
+  } catch {
+    return new Response(JSON.stringify({ error: 'Body inválido' }), { status: 400 })
+  }
 
-ARTESANÍAS (${artesanias.length} piezas — ${catResumen}):
-${arteCtx}
+  const messages = body.messages ?? []
+  if (!messages.length) {
+    return new Response(JSON.stringify({ error: 'Sin mensajes' }), { status: 400 })
+  }
 
-ALERTAS DE STOCK:
-- Agotados: ${agotados.length > 0 ? agotados.join(', ') : 'Ninguno'}
-- Series limitadas: ${limitadas.length > 0 ? limitadas.join(', ') : 'Ninguna'}
-- Por encargo: ${encargos.length > 0 ? encargos.join(', ') : 'Ninguno'}
+  const systemPrompt = `Sos el agente especialista de LaNik, marca de tejidos artesanales de Buenos Aires fundada por Natalia Szpitalnik.
 
-Respondé con este formato:
+Podés ayudar con: análisis del catálogo, estrategias de marketing, ideas para Instagram, SEO, pricing, campañas comerciales, y cualquier consulta de gestión del negocio.
 
-## Estado del catálogo
-[2-3 líneas con el resumen del estado actual]
+Tu tono es profesional pero cálido, en español argentino. Respondés de forma concisa y accionable. Para listas usás guiones (-). Para secciones usás ## título.
 
-## Recomendaciones para esta semana
-- [acción concreta 1]
-- [acción concreta 2]
-- [acción concreta 3]
-
-## Qué publicar en Instagram
-- [sugerencia de contenido 1 con descripción breve]
-- [sugerencia de contenido 2]
-
-## Atención prioritaria
-- [producto o acción que necesita atención urgente]`
+${buildContext()}`
 
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -76,7 +69,7 @@ Respondé con este formato:
       max_tokens: 1024,
       stream: true,
       system: systemPrompt,
-      messages: [{ role: 'user', content: userMessage }],
+      messages,
     }),
   })
 
