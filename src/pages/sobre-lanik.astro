@@ -1,0 +1,720 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { SITE } from '../data/site'
+
+const waUrl = `https://wa.me/${SITE.wa}?text=${encodeURIComponent('Hola Nati! Quiero saber más sobre LaNik.')}`
+---
+
+<BaseLayout
+  title="Sobre LaNik — Natalia Szpitalnik · Diseño & Tejido Artesanal"
+  description="La historia de Natalia Szpitalnik, la artesana detrás de LaNik. Más de 25 años tejiendo en Buenos Aires, colaboradora de El Arte de Tejer y referente del tejido artesanal urbano."
+>
+
+  <!-- ─── HERO ─── -->
+  <section class="sobre-hero">
+    <div class="sobre-hero-inner">
+      <span class="section-tag">Sobre LaNik</span>
+      <h1 class="sobre-hero-title">
+        Natalia<br><em>Szpitalnik</em>
+      </h1>
+      <p class="sobre-hero-lead">
+        Diseñadora textil. Artesana. Docente.<br>
+        Tejiendo desde los cinco años.
+      </p>
+    </div>
+    <div class="sobre-hero-img-col">
+      <!-- Foto de Nati: reemplazar src cuando esté disponible -->
+      <div class="sobre-hero-photo sobre-hero-photo--placeholder">
+        <img
+          src="/fotos-lanik/mod-6/Mod6-01.jpg"
+          alt="Obra tejida de LaNik — Buenos Aires"
+        />
+        <div class="photo-caption">
+          <span>Próximamente foto de Nati</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HISTORIA ─── -->
+  <section class="historia-section">
+    <div class="historia-inner">
+
+      <div class="historia-intro reveal">
+        <span class="section-tag">Los comienzos</span>
+        <h2 class="historia-title">
+          Todo empezó con<br>su abuela.
+        </h2>
+      </div>
+
+      <div class="historia-body reveal">
+        <p>
+          A los cinco años, Natalia aprendió a tejer de las manos de su abuela.
+          Dos agujas, una madeja de lana, y una paciencia que ninguna escuela enseña.
+          No fue una lección formal; fue un gesto cotidiano, una tarde de invierno,
+          un secreto pasado de generación en generación.
+        </p>
+        <p>
+          Desde ese primer punto, nunca paró. Mientras creció, el tejido creció con ella:
+          de hobbie a lenguaje propio, de lenguaje a oficio, de oficio a identidad.
+          Hoy, más de veinte años después, cada pieza que sale de sus manos
+          lleva ese mismo hilo invisible que la conecta con esa tarde y con esa abuela.
+        </p>
+        <p>
+          LaNik no es solo una marca. Es la continuación de esa historia.
+        </p>
+      </div>
+
+      <!-- PULL QUOTE -->
+      <blockquote class="historia-quote reveal">
+        <p>"Cuando tejo, no estoy produciendo. Estoy en conversación con el hilo,
+        con las manos de mi abuela, con todas las personas que van a llevar esa pieza."</p>
+        <cite>— Natalia Szpitalnik</cite>
+      </blockquote>
+
+    </div>
+  </section>
+
+  <!-- ─── FOTOS AMBIENTALES ─── -->
+  <section class="ambient-gallery">
+    <div class="ambient-inner">
+      <div class="ambient-img ambient-img--tall">
+        <img src="/fotos-lanik/mod-5/Mod5-01.jpg" alt="Paleta Otoño — LaNik" loading="lazy" />
+      </div>
+      <div class="ambient-col">
+        <div class="ambient-img ambient-img--sq">
+          <img src="/artesanias/sweaters/especial2.webp" alt="Sweater artesanal LaNik" loading="lazy" />
+        </div>
+        <div class="ambient-img ambient-img--sq">
+          <img src="/artesanias/munecos/muneco19.webp" alt="Muñeco tejido LaNik" loading="lazy" />
+        </div>
+      </div>
+      <div class="ambient-img ambient-img--tall">
+        <img src="/artesanias/ponchos/poncho5.webp" alt="Poncho artesanal LaNik" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TRAYECTORIA ─── -->
+  <section class="trayectoria-section reveal">
+    <div class="trayectoria-inner">
+
+      <div class="trayectoria-text">
+        <span class="section-tag">La trayectoria</span>
+        <h2 class="trayectoria-title">
+          Más de diez años<br>construyendo un proyecto.
+        </h2>
+        <p>
+          Lo que empezó como una pasión personal fue tomando forma de proyecto:
+          primero piezas para el entorno cercano, luego encargos, después una identidad propia.
+          Bajo el nombre <strong>LaNik</strong>, Natalia diseña y produce cada pieza con la misma
+          dedicación con la que aprendió, punto a punto.
+        </p>
+        <p>
+          Sus creaciones recorren una gama inusualmente amplia para una sola artesana:
+          gorras, sweaters, ponchos, chales, muñecos y pinturas textiles.
+          Cada categoría con su propio lenguaje, todos unidos por el mismo sello artesanal.
+        </p>
+      </div>
+
+      <div class="milestones">
+        <div class="milestone reveal">
+          <div class="milestone-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="milestone-text">
+            <strong>Desde los 5 años</strong>
+            <span>Tejiendo de forma ininterrumpida. Veinte años de práctica diaria.</span>
+          </div>
+        </div>
+        <div class="milestone reveal">
+          <div class="milestone-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="milestone-text">
+            <strong>El Arte de Tejer</strong>
+            <span>Colaboradora en la revista especializada más reconocida de tejido artesanal en Argentina. Sus diseños forman parte del catálogo de patrones 2025–2026.</span>
+          </div>
+        </div>
+        <div class="milestone reveal">
+          <div class="milestone-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><path d="M6 11.8v4.7c2 1.8 8 1.8 12 0v-4.7"/></svg>
+          </div>
+          <div class="milestone-text">
+            <strong>Charlas académicas</strong>
+            <span>Ha compartido su experiencia y técnica en espacios de formación universitaria vinculados al diseño textil en Buenos Aires.</span>
+          </div>
+        </div>
+        <div class="milestone reveal">
+          <div class="milestone-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div class="milestone-text">
+            <strong>Más de 10 años de proyecto</strong>
+            <span>Diseñando y produciendo piezas artesanales con identidad propia. Presencia en ferias, colaboraciones y comunidades de tejido a nivel nacional.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── FILOSOFÍA ─── -->
+  <section class="filosofia-section">
+    <div class="filosofia-inner">
+      <span class="section-tag" style="color:rgba(245,239,224,0.6)">La filosofía</span>
+      <h2 class="filosofia-title">
+        Cada pieza, una sola vez.
+      </h2>
+      <p class="filosofia-desc">
+        LaNik no tiene stock acumulado ni reposición automática.
+        Cuando un modelo se agota, se agota. Eso no es una limitación:
+        es una decisión. La artesanía real no se puede escalar sin perder lo que la hace artesanía.
+      </p>
+      <div class="filosofia-valores">
+        <div class="valor-item reveal">
+          <span class="valor-num">01</span>
+          <h3>Tejido a mano, sin excepción</h3>
+          <p>Cada punto lo hace Natalia. No hay máquinas, no hay ayudas mecánicas. Solo hilo, agujas y tiempo.</p>
+        </div>
+        <div class="valor-item reveal">
+          <span class="valor-num">02</span>
+          <h3>Series limitadas</h3>
+          <p>Los modelos se hacen en cantidades pequeñas. Tener una pieza de LaNik significa que pocas personas en el mundo tienen la misma.</p>
+        </div>
+        <div class="valor-item reveal">
+          <span class="valor-num">03</span>
+          <h3>Diseño con identidad</h3>
+          <p>Los patrones, combinaciones y texturas son propias. LaNik no replica tendencias masivas: las interpreta a su manera.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PUBLICACIONES ─── -->
+  <section class="publicaciones-section reveal">
+    <div class="publicaciones-inner">
+      <div class="pub-text">
+        <span class="section-tag">Publicaciones</span>
+        <h2 class="pub-title">
+          Reconocida en<br>"El Arte de Tejer"
+        </h2>
+        <p>
+          La revista <em>El Arte de Tejer</em> es la publicación de tejido artesanal de mayor
+          trayectoria en Argentina. Sus páginas reúnen a las diseñadoras y tejedoras más
+          reconocidas del país.
+        </p>
+        <p>
+          Los diseños de Natalia fueron seleccionados para integrar el equipo de colaboradoras
+          en las ediciones 2025–2026, con proyectos de tejido a dos agujas para distintos públicos.
+          Una validación que llega después de años de trabajo consistente y de un estilo propio inconfundible.
+        </p>
+      </div>
+      <div class="pub-visual">
+        <div class="pub-card">
+          <div class="pub-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <h3>El Arte de Tejer</h3>
+          <p>Revista especializada · Argentina</p>
+          <span class="pub-year">Ediciones 2025–2026</span>
+        </div>
+        <div class="pub-card pub-card--academic">
+          <div class="pub-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><path d="M6 11.8v4.7c2 1.8 8 1.8 12 0v-4.7"/><line x1="22" y1="8.5" x2="22" y2="15"/></svg>
+          </div>
+          <h3>Ámbito Universitario</h3>
+          <p>Diseño Textil · Buenos Aires</p>
+          <span class="pub-year">Charlas y encuentros</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─── -->
+  <section class="sobre-cta">
+    <span class="section-tag" style="display:block;text-align:center;color:rgba(245,239,224,0.6)">Hablemos</span>
+    <h2 class="sobre-cta-title">
+      ¿Querés conocer<br>el trabajo de Nati?
+    </h2>
+    <p class="sobre-cta-desc">
+      Escribile directamente. Cada consulta, encargo o simplemente una charla sobre tejido es bienvenida.
+    </p>
+    <div class="sobre-cta-actions">
+      <a href={waUrl} target="_blank" rel="noopener" class="btn-white" data-track="click_whatsapp_sobre">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        WhatsApp con Nati
+      </a>
+      <a href="/gorras" class="btn-outline-sobre">Ver la colección</a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+/* ─── HERO ─── */
+.sobre-hero {
+  background: var(--charcoal);
+  padding: 130px 5% 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+  align-items: end;
+  max-width: 100%;
+  overflow: hidden;
+}
+.sobre-hero-inner {
+  padding-bottom: 80px;
+  max-width: 560px;
+}
+.sobre-hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(3.5rem, 7vw, 6.5rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -4px;
+  line-height: 0.92;
+  margin: 16px 0 28px;
+}
+.sobre-hero-title em {
+  font-style: normal;
+  color: var(--terracota);
+}
+.sobre-hero-lead {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 300;
+  line-height: 1.8;
+}
+.sobre-hero-img-col {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+}
+.sobre-hero-photo {
+  width: 100%;
+  height: 75vh;
+  min-height: 440px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+}
+.sobre-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85) contrast(1.05);
+}
+.photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(26,26,26,0.6);
+  backdrop-filter: blur(8px);
+  padding: 10px 18px;
+  font-family: var(--font-head);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ─── HISTORIA ─── */
+.historia-section {
+  background: var(--crema);
+  padding: 100px 5%;
+}
+.historia-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.historia-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  color: var(--charcoal);
+  letter-spacing: -2.5px;
+  line-height: 1;
+  margin: 12px 0 48px;
+}
+.historia-body {
+  columns: 2;
+  column-gap: 60px;
+  margin-bottom: 60px;
+}
+.historia-body p {
+  font-size: 1rem;
+  color: rgba(26,26,26,0.7);
+  font-weight: 300;
+  line-height: 1.9;
+  margin-bottom: 20px;
+  break-inside: avoid;
+}
+.historia-body strong { color: var(--charcoal); font-weight: 600; }
+.historia-quote {
+  border-left: 3px solid var(--terracota);
+  padding: 8px 0 8px 36px;
+  margin: 0;
+}
+.historia-quote p {
+  font-family: var(--font-head);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 400;
+  color: var(--charcoal);
+  letter-spacing: -0.5px;
+  line-height: 1.5;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+.historia-quote cite {
+  font-family: var(--font-head);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--terracota);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+/* ─── GALERÍA AMBIENTAL ─── */
+.ambient-gallery {
+  background: var(--charcoal);
+  padding: 0;
+  overflow: hidden;
+}
+.ambient-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 520px;
+  gap: 4px;
+}
+.ambient-col {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+}
+.ambient-img {
+  overflow: hidden;
+}
+.ambient-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8) contrast(1.05);
+  transition: transform 0.6s ease, filter 0.4s ease;
+}
+.ambient-img:hover img {
+  transform: scale(1.04);
+  filter: brightness(0.9) contrast(1.05);
+}
+
+/* ─── TRAYECTORIA ─── */
+.trayectoria-section {
+  background: var(--charcoal-mid);
+  padding: 100px 5%;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.trayectoria-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.trayectoria-title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+  margin: 12px 0 28px;
+}
+.trayectoria-text p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.trayectoria-text strong { color: var(--crema); font-weight: 600; }
+
+.milestones {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.milestone {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 22px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: border-color 0.2s, background 0.2s;
+}
+.milestone:hover {
+  border-color: rgba(181,67,42,0.3);
+  background: rgba(255,255,255,0.06);
+}
+.milestone-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(181,67,42,0.15);
+  border: 1px solid rgba(181,67,42,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--terracota);
+}
+.milestone-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.milestone-text strong {
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.milestone-text span {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ─── FILOSOFÍA ─── */
+.filosofia-section {
+  background: var(--terracota);
+  padding: 100px 5%;
+}
+.filosofia-inner { max-width: 1200px; margin: 0 auto; }
+.filosofia-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -3px;
+  line-height: 0.95;
+  margin: 16px 0 32px;
+}
+.filosofia-desc {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 300;
+  line-height: 1.85;
+  max-width: 600px;
+  margin-bottom: 64px;
+}
+.filosofia-valores {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 48px;
+}
+.valor-item { display: flex; flex-direction: column; gap: 12px; }
+.valor-num {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.4);
+}
+.valor-item h3 {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.5px;
+}
+.valor-item p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+/* ─── PUBLICACIONES ─── */
+.publicaciones-section {
+  background: var(--charcoal);
+  padding: 100px 5%;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.publicaciones-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.pub-title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+  margin: 12px 0 28px;
+}
+.pub-text p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.52);
+  font-weight: 300;
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+.pub-text em { font-style: italic; color: rgba(255,255,255,0.75); }
+.pub-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pub-card {
+  padding: 28px;
+  background: var(--charcoal-mid);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: border-color 0.2s;
+}
+.pub-card:hover { border-color: rgba(181,67,42,0.35); }
+.pub-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(181,67,42,0.12);
+  border: 1px solid rgba(181,67,42,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--terracota);
+  margin-bottom: 16px;
+}
+.pub-card--academic .pub-card-icon {
+  background: rgba(143,175,154,0.12);
+  border-color: rgba(143,175,154,0.2);
+  color: var(--sage);
+}
+.pub-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.pub-card p {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.38);
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+.pub-year {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--terracota);
+}
+.pub-card--academic .pub-year { color: var(--sage); }
+
+/* ─── CTA ─── */
+.sobre-cta {
+  background: var(--terracota);
+  padding: 100px 5%;
+  text-align: center;
+}
+.sobre-cta-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -2.5px;
+  line-height: 1;
+  margin: 16px auto 20px;
+  max-width: 560px;
+}
+.sobre-cta-desc {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 300;
+  max-width: 440px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+}
+.sobre-cta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.btn-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 32px;
+  background: var(--white);
+  color: var(--terracota);
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-white:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+}
+.btn-outline-sobre {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 32px;
+  border: 2px solid rgba(255,255,255,0.45);
+  color: var(--white);
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-outline-sobre:hover {
+  border-color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.08);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1000px) {
+  .sobre-hero { grid-template-columns: 1fr; min-height: auto; padding-top: 110px; }
+  .sobre-hero-inner { padding-bottom: 40px; max-width: 100%; }
+  .sobre-hero-img-col { display: none; }
+  .historia-body { columns: 1; }
+  .trayectoria-inner { grid-template-columns: 1fr; gap: 48px; }
+  .publicaciones-inner { grid-template-columns: 1fr; gap: 48px; }
+  .ambient-inner { grid-template-columns: 1fr 1fr; height: 360px; }
+  .ambient-img--tall:last-child { display: none; }
+}
+@media (max-width: 600px) {
+  .sobre-hero { padding: 100px 5% 0; }
+  .historia-section, .trayectoria-section, .filosofia-section, .publicaciones-section { padding: 64px 5%; }
+  .filosofia-valores { grid-template-columns: 1fr; }
+  .ambient-inner { grid-template-columns: 1fr; height: auto; }
+  .ambient-col { grid-template-rows: auto; }
+  .ambient-img { height: 200px; }
+  .sobre-cta-actions { flex-direction: column; }
+  .btn-white, .btn-outline-sobre { width: 100%; justify-content: center; }
+}
+</style>

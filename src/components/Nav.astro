@@ -1,0 +1,149 @@
+---
+const links = [
+  { href: '/gorras',      label: 'Gorras' },
+  { href: '/artesanias',  label: 'Artesanías' },
+  { href: '/sobre-lanik', label: 'Sobre LaNik' },
+]
+const current = Astro.url.pathname
+---
+
+<nav>
+  <a href="/" class="nav-logo">La<span>Nik</span></a>
+
+  <ul class="nav-links">
+    {links.map(l => (
+      <li>
+        <a href={l.href} class:list={[{ active: current.startsWith(l.href) }]}>
+          {l.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <a href="https://wa.me/5491131986298?text=Hola%20LaNik!%20Me%20interesa%20conocer%20los%20modelos%20disponibles."
+     class="nav-cta" target="_blank" data-track="click_whatsapp">
+    Consultar
+  </a>
+
+  <button class="nav-hamburger" aria-label="Menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="nav-mobile-menu">
+    {links.map(l => <a href={l.href}>{l.label}</a>)}
+    <a href="https://wa.me/5491131986298?text=Hola%20LaNik!" class="nav-mobile-cta" target="_blank">
+      Consultar por WhatsApp
+    </a>
+  </div>
+</nav>
+
+<style>
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 5%;
+  background: rgba(26, 26, 26, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.nav-logo {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--terracota); }
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.25s;
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--white); }
+
+.nav-cta {
+  background: var(--terracota);
+  color: var(--white);
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 40px;
+  text-decoration: none;
+  transition: background 0.25s;
+}
+.nav-cta:hover { background: var(--terracota-light); }
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 65px; left: 0; right: 0;
+  background: rgba(26,26,26,0.97);
+  backdrop-filter: blur(16px);
+  padding: 32px 5% 40px;
+  flex-direction: column;
+  gap: 24px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.nav-mobile-menu a {
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+}
+.nav-mobile-cta {
+  margin-top: 8px;
+  color: var(--terracota) !important;
+}
+.nav-mobile-menu.open { display: flex; }
+
+@media (max-width: 900px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+}
+</style>
+
+<script>
+  const btn = document.querySelector('.nav-hamburger')!
+  const menu = document.querySelector('.nav-mobile-menu')!
+  btn.addEventListener('click', () => {
+    const open = menu.classList.toggle('open')
+    btn.setAttribute('aria-expanded', String(open))
+  })
+</script>

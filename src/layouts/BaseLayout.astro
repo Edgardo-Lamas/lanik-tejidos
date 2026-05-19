@@ -1,0 +1,89 @@
+---
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+import WaFloat from '../components/WaFloat.astro'
+import '../styles/global.css'
+import { SITE } from '../data/site'
+
+interface Props {
+  title: string
+  description?: string
+  ogImage?: string
+}
+
+const {
+  title,
+  description = 'Gorras tejidas 100% a mano en Buenos Aires. Series limitadas con identidad propia.',
+  ogImage = '/fotos-lanik/mod-3/Mod3-01.jpg',
+} = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, SITE.url)
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- GA4 -->
+  <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.ga4}`}></script>
+  <script define:vars={{ ga4: SITE.ga4 }}>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', ga4);
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content={canonicalURL} />
+  <meta property="og:title"       content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image"       content={`${SITE.url}${ogImage}`} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image"       content={`${SITE.url}${ogImage}`} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+
+  <slot name="head" />
+</head>
+<body>
+  <Nav />
+  <main>
+    <slot />
+  </main>
+  <Footer />
+  <WaFloat />
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')),
+      { threshold: 0.12 }
+    )
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+
+    // GA4 tracking
+    document.querySelectorAll('a[data-track]').forEach(el => {
+      el.addEventListener('click', () => {
+        const event = (el as HTMLElement).dataset.track
+        if (event) (window as any).gtag?.('event', event)
+      })
+    })
+  </script>
+</body>
+</html>

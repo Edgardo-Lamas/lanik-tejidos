@@ -1,0 +1,296 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { gorras } from '../../data/gorras'
+
+const badgeColor: Record<string, string> = {
+  'Serie Limitada':    'badge--limited',
+  'Últimas unidades':  'badge--last',
+  'Agotado':           'badge--out',
+  'Disponible':        'badge--available',
+}
+---
+
+<BaseLayout
+  title="Gorras — LaNik Diseño & Tejido"
+  description="Colección completa de gorras tejidas 100% a mano en Buenos Aires. 7 modelos únicos, series limitadas. Cada pieza es irrepetible."
+>
+
+  <!-- HERO -->
+  <section class="cat-hero">
+    <div class="cat-hero-inner">
+      <span class="section-tag">Colección</span>
+      <h1 class="cat-hero-title">Gorras</h1>
+      <p class="cat-hero-desc">
+        Tejidas a mano, punto a punto. Series limitadas.<br>
+        Cuando se agota un modelo, no hay reposición.
+      </p>
+      <div class="cat-hero-meta">
+        <span>{gorras.filter(g => g.disponible).length} modelos disponibles</span>
+        <span class="meta-dot">·</span>
+        <span>Envío a todo el país</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRILLA -->
+  <section class="gorras-section">
+    <div class="gorras-grid">
+      {gorras.map(g => (
+        <a
+          href={`/gorras/${g.id}`}
+          class:list={['product-card', { 'product-card--out': !g.disponible }]}
+        >
+          <div class="product-card-img">
+            <img
+              src={g.fotoHero}
+              alt={`LaNik — ${g.nombre}`}
+              loading="lazy"
+            />
+            <div class="product-card-overlay"></div>
+            <span class:list={['product-badge', badgeColor[g.badge] ?? '']}>{g.badge}</span>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-colors">{g.colores.join(' · ')}</div>
+            <h2 class="product-card-name">{g.nombre}</h2>
+            <p class="product-card-desc">{g.descripcion}</p>
+            <div class="product-card-footer">
+              <span class="product-card-price">
+                {g.disponible ? `$${g.precio.toLocaleString('es-AR')}` : 'Agotado'}
+              </span>
+              <span class="product-card-cta">
+                {g.disponible ? 'Ver modelo →' : 'Ver detalle →'}
+              </span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- STRIP INFO -->
+  <section class="gorras-info-strip">
+    <div class="info-strip-inner">
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>Envío a todo el país</span>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Calidad artesanal garantizada</span>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Respondemos por WhatsApp</span>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+/* HERO */
+.cat-hero {
+  background: var(--charcoal);
+  padding: 140px 5% 80px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.cat-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.cat-hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -3px;
+  color: var(--white);
+  line-height: 1;
+  margin: 12px 0 20px;
+}
+.cat-hero-desc {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  line-height: 1.8;
+  max-width: 480px;
+  margin-bottom: 24px;
+}
+.cat-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.5px;
+}
+.meta-dot { color: var(--terracota); }
+
+/* GRILLA */
+.gorras-section {
+  background: var(--charcoal);
+  padding: 60px 5% 100px;
+}
+.gorras-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* CARDS */
+.product-card {
+  display: block;
+  text-decoration: none;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--charcoal-mid);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  border-color: rgba(181,67,42,0.4);
+}
+.product-card--out { opacity: 0.55; }
+
+.product-card-img {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+.product-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+  filter: brightness(0.9) contrast(1.05);
+}
+.product-card:hover .product-card-img img { transform: scale(1.06); }
+.product-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26,26,26,0.7) 0%, transparent 50%);
+}
+
+/* BADGE */
+.product-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.badge--available  { background: rgba(26,26,26,0.75); color: rgba(255,255,255,0.6); }
+.badge--limited    { background: var(--terracota);    color: var(--white); }
+.badge--last       { background: var(--ocre);         color: var(--white); }
+.badge--out        { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.45); }
+
+/* BODY */
+.product-card-body {
+  padding: 20px 22px 24px;
+}
+.product-card-colors {
+  font-family: var(--font-head);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--terracota);
+  margin-bottom: 6px;
+}
+.product-card-name {
+  font-family: var(--font-head);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.product-card-desc {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.product-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.product-card-price {
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--crema);
+  letter-spacing: -0.5px;
+}
+.product-card-cta {
+  font-family: var(--font-head);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--terracota);
+  transition: letter-spacing 0.2s;
+}
+.product-card:hover .product-card-cta { letter-spacing: 0.5px; }
+
+/* INFO STRIP */
+.gorras-info-strip {
+  background: var(--charcoal-mid);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 32px 5%;
+}
+.info-strip-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 40px;
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+}
+.info-item svg { color: var(--terracota); flex-shrink: 0; }
+.info-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .gorras-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .info-item { padding: 0 20px; }
+}
+@media (max-width: 600px) {
+  .cat-hero { padding: 110px 5% 50px; }
+  .gorras-grid { grid-template-columns: 1fr; gap: 16px; }
+  .product-card-img { aspect-ratio: 3/2; }
+  .info-strip-inner { flex-direction: column; gap: 20px; }
+  .info-divider { width: 60px; height: 1px; }
+  .info-item { padding: 0; }
+}
+</style>

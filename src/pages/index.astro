@@ -1,17 +1,1285 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { categorias } from '../data/categorias'
+import { gorras } from '../data/gorras'
+import { SITE } from '../data/site'
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="LaNik — Diseño & Tejido Artesanal Urbano"
+  description="Gorras y artesanías tejidas 100% a mano en Buenos Aires. Series limitadas con identidad propia."
+>
+
+  <!-- ─── HERO ─────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <span class="hero-badge">● Tejido Artesanal · Buenos Aires</span>
+        <h1 class="hero-title">
+          <span class="hero-tword hero-tword-la">La</span><span class="hero-tword hero-tword-nik">Nik</span>
+        </h1>
+        <p class="hero-subtitle">Diseño & Tejido Artesanal</p>
+        <p class="hero-desc">
+          Cada pieza tejida a mano, punto a punto. Series limitadas con identidad propia.
+          Cuando se agota, no hay reposición.
+        </p>
+        <div class="hero-actions">
+          <a href="/gorras" class="btn-primary">Ver colección →</a>
+          <a href="/sobre-lanik" class="btn-secondary">Nuestra historia</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Tejido a mano</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">7+</span>
+            <span class="stat-label">Modelos únicos</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">Ltda.</span>
+            <span class="stat-label">Series limitadas</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image" id="heroTilt">
+        <!-- wrapper float: solo maneja translateY -->
+        <div class="hero-float">
+          <!-- wrapper tilt: solo maneja rotateX/Y via JS -->
+          <div class="hero-image-inner" id="heroInner">
+            <img
+              src="/fotos-lanik/mod-3/Mod3-01.jpg"
+              alt="LaNik — Café Azul, gorra tejida artesanal con etiqueta visible"
+              class="hero-img-main"
+              fetchpriority="high"
+            />
+            <div class="hero-image-shine" id="heroShine"></div>
+            <div class="hero-img-overlay">
+              <div>
+                <div class="hero-img-tag">Disponible ahora</div>
+                <div class="hero-img-title">Café Azul</div>
+              </div>
+              <div class="hero-badge-ltd">Serie Ltd.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span class="scroll-hint-line"></span>
+      <span class="scroll-hint-label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ─── VIDEO SHOWCASE ──────────────────────────────── -->
+  <section class="video-showcase">
+    <div class="video-showcase-inner">
+      <video
+        class="showcase-video"
+        src="/fotos-canva/video-hero.mp4"
+        autoplay muted loop playsinline
+        aria-hidden="true"
+      ></video>
+      <div class="showcase-overlay"></div>
+      <div class="showcase-content reveal">
+        <span class="section-tag" style="color:var(--crema)">El origen</span>
+        <h2 class="showcase-title">Hilo por hilo,<br>todo a mano.</h2>
+        <p class="showcase-desc">Nati elige cada hebra. Diseña el patrón. Lo teje punto a punto, sin prisa.<br>No hay dos gorras exactamente iguales.</p>
+        <a href="/gorras" class="btn-primary">Ver la colección →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── GALERÍA PALERMO SOHO ─────────────────────────── -->
+  <section class="palermo-section" id="palermo">
+    <div class="palermo-sticky">
+      <div class="palermo-bg" id="palermoBg" style="background-image: url('/palermo-soho-v3.jpg')"></div>
+      <div class="palermo-overlay"></div>
+
+      <div class="palermo-ui">
+        <div class="palermo-header">
+          <span class="section-tag" style="color:var(--crema)">Colección</span>
+          <h2 class="section-title light">Explorá nuestra<br>colección.</h2>
+        </div>
+
+        <!-- Par 1 -->
+        <div class="card-pair" data-pair="0">
+          {[gorras[1], gorras[5]].map(p => (
+            <a href="/gorras" class="cat-card">
+              <div class="cat-card-img">
+                <img src={p.fotoHero} alt={`LaNik — ${p.nombre}`} loading="lazy" />
+                <div class="cat-card-img-overlay"></div>
+                <span class="cat-card-badge">{p.badge}</span>
+              </div>
+              <div class="cat-card-body">
+                <div class="cat-card-tag">{p.colores.join(' · ')}</div>
+                <h3 class="cat-card-title">{p.nombre}</h3>
+                <p class="cat-card-desc">{p.descripcion}</p>
+                <div class="cat-card-price">${p.precio.toLocaleString('es-AR')}</div>
+                <span class="cat-card-cta">Ver modelo <span class="arrow">→</span></span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Par 2 -->
+        <div class="card-pair" data-pair="1">
+          {[gorras[2], gorras[4]].map(p => (
+            <a href="/gorras" class="cat-card">
+              <div class="cat-card-img">
+                <img src={p.fotoHero} alt={`LaNik — ${p.nombre}`} loading="lazy" />
+                <div class="cat-card-img-overlay"></div>
+                <span class="cat-card-badge">{p.badge}</span>
+              </div>
+              <div class="cat-card-body">
+                <div class="cat-card-tag">{p.colores.join(' · ')}</div>
+                <h3 class="cat-card-title">{p.nombre}</h3>
+                <p class="cat-card-desc">{p.descripcion}</p>
+                <div class="cat-card-price">${p.precio.toLocaleString('es-AR')}</div>
+                <span class="cat-card-cta">Ver modelo <span class="arrow">→</span></span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Par 3 -->
+        <div class="card-pair" data-pair="2">
+          {[gorras[0], gorras[6]].map(p => (
+            <a href="/gorras" class="cat-card">
+              <div class="cat-card-img">
+                <img src={p.fotoHero} alt={`LaNik — ${p.nombre}`} loading="lazy" />
+                <div class="cat-card-img-overlay"></div>
+                <span class="cat-card-badge">{p.badge}</span>
+              </div>
+              <div class="cat-card-body">
+                <div class="cat-card-tag">{p.colores.join(' · ')}</div>
+                <h3 class="cat-card-title">{p.nombre}</h3>
+                <p class="cat-card-desc">{p.descripcion}</p>
+                <div class="cat-card-price">${p.precio.toLocaleString('es-AR')}</div>
+                <span class="cat-card-cta">Ver modelo <span class="arrow">→</span></span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Indicador de scroll -->
+        <div class="palermo-scroll-hint" id="palermoPager">
+          <div class="pager-dot active"></div>
+          <div class="pager-dot"></div>
+          <div class="pager-dot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MODELS CAROUSEL ────────────────────────────────── -->
+  <section class="models-section">
+    <div class="models-header reveal">
+      <span class="section-tag">Lo llevan así</span>
+      <h2 class="section-title light">Diseñadas para<br>ser vividas.</h2>
+    </div>
+    <div class="models-track-wrap">
+      <div class="models-track">
+        {[
+          { img: '1', nombre: 'Café Azul',        ciudad: 'Buenos Aires' },
+          { img: '2', nombre: 'Paleta Otoño',      ciudad: 'Buenos Aires' },
+          { img: '3', nombre: 'Terracota Ribbed',  ciudad: 'Buenos Aires' },
+          { img: '4', nombre: 'Sage Geo',          ciudad: 'Buenos Aires' },
+          { img: '5', nombre: 'Pompón Natural',    ciudad: 'Buenos Aires' },
+          { img: '1', nombre: 'Café Azul',        ciudad: 'Buenos Aires' },
+          { img: '2', nombre: 'Paleta Otoño',      ciudad: 'Buenos Aires' },
+          { img: '3', nombre: 'Terracota Ribbed',  ciudad: 'Buenos Aires' },
+          { img: '4', nombre: 'Sage Geo',          ciudad: 'Buenos Aires' },
+          { img: '5', nombre: 'Pompón Natural',    ciudad: 'Buenos Aires' },
+        ].map((m, i) => (
+          <div class="model-item" aria-hidden={i >= 5 ? 'true' : undefined}>
+            <img
+              src={`/fotos-canva/model/gorra-model-${m.img}.png`}
+              alt={i < 5 ? `Modelo con gorra LaNik ${m.nombre}` : ''}
+              loading="lazy"
+            />
+            <div class="model-caption">
+              <span class="model-caption-name">{m.nombre}</span>
+              <span class="model-caption-city">{m.ciudad}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROCESO ──────────────────────────────────────── -->
+  <section class="proceso-section">
+    <div class="proceso-inner">
+      <div class="proceso-header reveal">
+        <span class="section-tag">El proceso</span>
+        <h2 class="section-title light">Cada gorra,<br>hecha para durar.</h2>
+      </div>
+      <div class="proceso-grid">
+        {[
+          { num: '01', title: 'Selección del hilo',  desc: 'Hilos de lana y acrílico premium, seleccionados por textura, resistencia y color.' },
+          { num: '02', title: 'Tejido a mano',        desc: 'Cada punto tejido uno a uno. Sin máquinas. Sin atajos. El tiempo es parte del valor.' },
+          { num: '03', title: 'Control de calidad',   desc: 'Revisión de tensión, forma y acabados. Cada pieza aprobada antes de salir.' },
+          { num: '04', title: 'Etiquetado y entrega', desc: 'Etiqueta de cuero grabada "LaNik diseño & tejido". Empaque cuidado. Envío a todo el país.' },
+        ].map((step, i) => (
+          <div class="proceso-step reveal" style={`transition-delay: ${i * 0.12}s`}>
+            <div class="step-num">{step.num}</div>
+            <div class="step-title">{step.title}</div>
+            <div class="step-desc">{step.desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CREDENCIALES STRIP ───────────────────────────── -->
+  <section class="creds-section reveal">
+    <div class="creds-inner">
+      <div class="cred-item">
+        <svg class="cred-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/>
+          <path d="M6 11.8v4.7c2 1.8 8 1.8 12 0v-4.7"/>
+          <line x1="22" y1="8.5" x2="22" y2="15"/>
+        </svg>
+        <span class="cred-text">Docente invitada<br><strong>Universidad de Buenos Aires</strong></span>
+      </div>
+      <div class="cred-divider"></div>
+      <div class="cred-item">
+        <svg class="cred-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+        <span class="cred-text">Reconocida en<br><strong>revistas especializadas</strong> de tejido</span>
+      </div>
+      <div class="cred-divider"></div>
+      <div class="cred-item">
+        <svg class="cred-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22c5.5 0 8-2.5 8-8S14 3 12 3 4 6.5 4 14s2.5 8 8 8z"/>
+          <path d="M12 8v8M8 12h8"/>
+        </svg>
+        <span class="cred-text">Artesanía sin<br><strong>producción en serie</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ARTESANÍAS TEASER ───────────────────────────── -->
+  <section class="arte-teaser reveal">
+    <div class="arte-teaser-inner">
+
+      <div class="arte-teaser-text">
+        <span class="section-tag">También hacemos</span>
+        <h2 class="arte-teaser-title">Arte&shy;sanías</h2>
+        <p class="arte-teaser-desc">
+          Más allá de las gorras: bolsos, muñecos, accesorios y piezas únicas tejidas a mano.
+          Cada creación con la misma dedicación y el mismo amor por el detalle.
+        </p>
+        <a href="/artesanias" class="arte-teaser-cta">
+          Explorar artesanías
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <div class="arte-teaser-grid">
+        <a href="/artesanias?cat=Sweaters" class="arte-tile">
+          <img src="/artesanias/sweaters/especial1.webp" alt="Sweaters tejidos LaNik" loading="lazy" />
+          <div class="arte-tile-overlay"></div>
+          <span class="arte-tile-label">Sweaters</span>
+        </a>
+        <a href="/artesanias?cat=Muñecos" class="arte-tile">
+          <img src="/artesanias/munecos/muneco4.webp" alt="Muñecos tejidos LaNik" loading="lazy" />
+          <div class="arte-tile-overlay"></div>
+          <span class="arte-tile-label">Muñecos</span>
+        </a>
+        <a href="/artesanias?cat=Ponchos" class="arte-tile">
+          <img src="/artesanias/ponchos/poncho5.webp" alt="Ponchos tejidos LaNik" loading="lazy" />
+          <div class="arte-tile-overlay"></div>
+          <span class="arte-tile-label">Ponchos</span>
+        </a>
+        <a href="/artesanias?cat=Pinturas" class="arte-tile">
+          <img src="/artesanias/pinturas/pintura14.webp" alt="Pinturas textiles LaNik" loading="lazy" />
+          <div class="arte-tile-overlay"></div>
+          <span class="arte-tile-label">Pinturas</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── CTA CONTACTO ─────────────────────────────────── -->
+  <section class="cta-section">
+    <span class="section-tag" style="display:block;text-align:center;color:rgba(245,239,224,0.7)">
+      Tejida para vos
+    </span>
+    <h2 class="section-title light" style="text-align:center;margin:16px auto 20px;max-width:560px">
+      Escribinos.<br>Te respondemos hoy.
+    </h2>
+    <p class="contact-desc">
+      ¿Te quedó algún modelo en la cabeza? Consultá disponibilidad, pedí tu talle o encargá una pieza en el color que quieras.
+    </p>
+    <div class="contact-actions">
+      <a href={`https://wa.me/${SITE.wa}?text=Hola%20LaNik!%20Me%20interesa%20conocer%20los%20modelos%20disponibles.`}
+         class="btn-white" target="_blank" data-track="click_whatsapp">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        WhatsApp
+      </a>
+      <a href={`https://instagram.com/${SITE.instagram}`} class="btn-outline-white" target="_blank" data-track="click_instagram">
+        @{SITE.instagram}
+      </a>
+    </div>
+  </section>
+
+<script>
+  /* ── HERO TILT 3D ───────────────────────────────────── */
+  const heroWrap  = document.getElementById('heroTilt')
+  const heroInner = document.getElementById('heroInner')
+  const heroShine = document.getElementById('heroShine')
+
+  if (heroWrap && heroInner && heroShine) {
+    const MAX_X  = 10    // grados máx inclinación vertical
+    const MAX_Y  = 18    // grados máx inclinación horizontal
+    let rafId    = 0
+    let isLeaving = false
+
+    heroWrap.addEventListener('mousemove', (e: MouseEvent) => {
+      isLeaving = false
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        const rect = heroWrap.getBoundingClientRect()
+        const x = (e.clientX - rect.left) / rect.width   // 0–1
+        const y = (e.clientY - rect.top)  / rect.height  // 0–1
+
+        const rotY =  (x - 0.5) * MAX_Y * 2
+        const rotX = -(y - 0.5) * MAX_X * 2
+
+        // Sin transition en mousemove — respuesta instantánea al cursor
+        heroInner.style.transition = 'none'
+        heroInner.style.transform  = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.03,1.03,1.03)`
+
+        // Brillo sigue al cursor
+        heroShine.style.setProperty('--mx', `${x * 100}%`)
+        heroShine.style.setProperty('--my', `${y * 100}%`)
+      })
+    })
+
+    heroWrap.addEventListener('mouseleave', () => {
+      isLeaving = true
+      cancelAnimationFrame(rafId)
+      // Spring suave de vuelta al reposo
+      heroInner.style.transition = 'transform 0.8s cubic-bezier(0.23,1,0.32,1)'
+      heroInner.style.transform  = 'rotateX(0deg) rotateY(0deg) scale3d(1,1,1)'
+    })
+  }
+</script>
+
+<script>
+  const section = document.getElementById('palermo')
+  const bg      = document.getElementById('palermoBg')
+  const pairs   = Array.from(document.querySelectorAll<HTMLElement>('.card-pair'))
+  const dots    = Array.from(document.querySelectorAll<HTMLElement>('.pager-dot'))
+
+  if (!section || !bg || pairs.length === 0) {
+    console.warn('LaNik: palermo elements not found')
+  } else {
+    const N    = pairs.length   // 3
+    const STEP = 1 / N          // 0.333 — cada par ocupa 1/3 del scroll total
+    const FADE = STEP * 0.22    // zona de crossfade = 22% de cada segmento
+
+    function getOpacity(p: number, i: number): number {
+      const s = i * STEP        // start del segmento
+      const e = s + STEP        // end del segmento
+
+      // Fuera del rango → invisible
+      if (p < s - FADE || p > e + FADE) return 0
+
+      // Par 0: sin fade-in (arranca completamente visible)
+      const fadeIn  = i === 0     ? 1 : Math.min(1, (p - s) / FADE)
+      // Último par: sin fade-out (queda visible al llegar al fondo)
+      const fadeOut = i === N - 1 ? 1 : Math.min(1, (e - p) / FADE)
+
+      return Math.max(0, Math.min(fadeIn, fadeOut))
+    }
+
+    function update() {
+      const rect       = section.getBoundingClientRect()
+      const scrollable = section.offsetHeight - window.innerHeight
+      const progress   = Math.max(0, Math.min(1, -rect.top / scrollable))
+
+      // Parallax vertical + ligero paneo horizontal
+      // Vertical: el fondo sube mientras scrolleás — sensación de avanzar
+      const yPct = -progress * 40
+      // Horizontal: suave movimiento diagonal para dar profundidad
+      const xPct = (progress - 0.5) * 6
+      bg.style.transform = `translate(${xPct}%, ${yPct}%)`
+
+      // Rotar pares — cada uno aparece en su propia posición del viewport
+      pairs.forEach((pair, i) => {
+        const op = getOpacity(progress, i)
+        pair.style.opacity       = String(op)
+        // Entrada desde abajo, salida hacia arriba — movimiento natural
+        const yOffset = i === 0 && progress < STEP
+          ? (1 - op) * 32        // par 0 entra desde abajo
+          : op < 0.99
+            ? (progress > i * STEP + STEP / 2 ? -1 : 1) * (1 - op) * 32
+            : 0
+        pair.style.transform     = `translateY(${yOffset}px)`
+        pair.style.pointerEvents = op > 0.3 ? 'auto' : 'none'
+      })
+
+      // Dots
+      const active = Math.min(Math.floor(progress / STEP), N - 1)
+      dots.forEach((d, i) => d.classList.toggle('active', i === active))
+    }
+
+    window.addEventListener('scroll', update, { passive: true })
+    update()   // inicializar estado correcto al cargar
+  }
+</script>
+
+<script>
+  /* ── SUBTITLE CHAR STAGGER ──────────────────────── */
+  const sub = document.querySelector<HTMLElement>('.hero-subtitle')
+  if (sub) {
+    const BASE_DELAY = 0.65
+    const STEP       = 0.032
+    const text       = sub.textContent ?? ''
+    sub.innerHTML    = ''
+    sub.style.cssText += '; opacity:1; transform:none; animation:none'
+    text.split('').forEach((char, i) => {
+      const s = document.createElement('span')
+      s.className = 'hero-char'
+      s.textContent = char === ' ' ? ' ' : char
+      s.style.animationDelay = `${BASE_DELAY + i * STEP}s`
+      sub.appendChild(s)
+    })
+  }
+</script>
+
+</BaseLayout>
+
+<style>
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 5% 80px;
+  position: relative;
+  overflow: hidden;
+  background: var(--charcoal);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(181,67,42,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(181,67,42,0.15);
+  border: 1px solid rgba(181,67,42,0.4);
+  color: var(--terracota);
+  font-family: var(--font-head);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 40px;
+  margin-bottom: 28px;
+}
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -2px;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.accent { color: var(--terracota); }
+.hero-subtitle {
+  font-family: var(--font-head);
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  font-weight: 300;
+  color: var(--sage);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-desc {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 300;
+  max-width: 480px;
+  line-height: 1.8;
+  margin-bottom: 44px;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 50px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.stat-number {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--terracota);
+  display: block;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+  display: block;
+}
+.hero-image {
+  position: relative;
+  perspective: 1200px;
+  perspective-origin: center center;
+  cursor: crosshair;
+}
+/* Wrapper que SOLO hace el float vertical — no toca rotación */
+.hero-float {
+  animation: floatY 6s ease-in-out infinite;
+  will-change: transform;
+}
+/* Wrapper que SOLO recibe el tilt del JS — sin animation propia */
+.hero-image-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateY(0deg);
+  filter: drop-shadow(0 24px 40px rgba(0,0,0,0.5));
+  border-radius: 20px;
+  will-change: transform;
+}
+.hero-img-main {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 20px;
+  display: block;
+  filter: contrast(1.05) brightness(0.95);
+}
+/* Brillo sutil que sigue al mouse — capa superior */
+.hero-image-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255,255,255,0.10) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.hero-image:hover .hero-image-shine { opacity: 1; }
+
+.hero-img-overlay {
+  position: absolute;
+  bottom: 24px; left: 24px; right: 24px;
+  background: rgba(26,26,26,0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  /* sube un poco en 3D para que flote sobre la foto */
+  transform: translateZ(20px);
+}
+.hero-img-tag {
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--sage);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.hero-img-title {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-top: 4px;
+}
+.hero-badge-ltd {
+  background: var(--terracota);
+  color: var(--white);
+  font-family: var(--font-head);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+/* ── PALERMO SECTION ─────────────────────────────────── */
+.palermo-section {
+  height: 450vh;
+  position: relative;
+  z-index: 1;
+}
+.palermo-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.palermo-bg {
+  position: absolute;
+  top: -25%; left: 0; right: 0; bottom: -25%;
+  background-size: cover;
+  background-position: center center;
+  will-change: transform;
+}
+.palermo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(26,26,26,0.05) 0%,
+    rgba(26,26,26,0.10) 35%,
+    rgba(26,26,26,0.55) 65%,
+    rgba(26,26,26,0.88) 100%
+  );
+}
+
+/* Header fijo arriba — siempre visible mientras scrolleás la sección */
+.palermo-header {
+  position: absolute;
+  top: 88px;   /* debajo del nav */
+  left: 5%;
+  z-index: 3;
+}
+
+/* ── CARD PAIRS ──────────────────────────────────────── */
+/* Base compartida — sin transition CSS, el JS maneja todo */
+.card-pair {
+  position: absolute;
+  left: 5%; right: 5%;
+  display: flex;
+  gap: 24px;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+/* Par 0 — izquierda, cerca del fondo. "Entrás a la calle." */
+.card-pair[data-pair="0"] {
+  bottom: 64px;
+  justify-content: flex-start;
+}
+
+/* Par 1 — derecha, mitad de pantalla. "Estás en el medio del recorrido." */
+.card-pair[data-pair="1"] {
+  bottom: calc(50vh - 200px);
+  justify-content: flex-end;
+}
+
+/* Par 2 — centrado, ligeramente más arriba. "Llegás al fondo." */
+.card-pair[data-pair="2"] {
+  bottom: 100px;
+  justify-content: center;
+}
+
+/* pager */
+.palermo-scroll-hint {
+  position: absolute;
+  bottom: 22px;
+  right: 5%;
+  z-index: 4;
+}
+
+/* ── CARDS ───────────────────────────────────────────── */
+.cat-card {
+  display: block;
+  text-decoration: none;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(18,18,18,0.84);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  width: 320px;
+  flex-shrink: 0;
+}
+.cat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px rgba(0,0,0,0.55);
+  border-color: rgba(181,67,42,0.5);
+}
+.cat-card--soon { opacity: 0.6; pointer-events: none; }
+.cat-card-img {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+.cat-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+  filter: brightness(0.9) contrast(1.05);
+}
+.cat-card:hover .cat-card-img img { transform: scale(1.07); }
+.cat-card-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(18,18,18,0.5) 0%, transparent 55%);
+}
+.cat-card-badge {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: var(--terracota);
+  color: var(--white);
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.cat-badge-soon {
+  position: absolute;
+  top: -12px; right: 16px;
+  background: var(--ocre);
+  color: var(--white);
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.cat-card-body { padding: 18px 20px 22px; position: relative; }
+.cat-card-tag {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--terracota);
+  margin-bottom: 6px;
+}
+.cat-card-title {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.cat-card-desc {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.cat-card-price {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--crema);
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+.cat-card-cta {
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(245,239,224,0.55);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.arrow { transition: transform 0.25s; }
+.cat-card:hover .arrow { transform: translateX(5px); }
+.cat-card-cta.muted { color: rgba(255,255,255,0.28); }
+
+/* ── PAGER DOTS ──────────────────────────────────────── */
+.palermo-scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  right: 5%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.pager-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transition: background 0.3s, transform 0.3s;
+}
+.pager-dot.active {
+  background: var(--terracota);
+  transform: scale(1.4);
+}
+
+/* VIDEO SHOWCASE */
+.video-showcase {
+  position: relative;
+  z-index: 2;
+  height: 88vh;
+  min-height: 560px;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+  margin-bottom: -5vh;
+}
+.video-showcase-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.showcase-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.showcase-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(26,26,26,0.88) 0%,
+    rgba(26,26,26,0.45) 55%,
+    rgba(26,26,26,0.18) 100%
+  );
+}
+.showcase-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8%;
+  max-width: 680px;
+}
+.showcase-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--white);
+  margin: 16px 0 20px;
+}
+.showcase-desc {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 300;
+  line-height: 1.8;
+  max-width: 400px;
+  margin-bottom: 36px;
+}
+
+/* MODELS CAROUSEL */
+.models-section {
+  background: var(--charcoal-mid);
+  padding: 80px 0;
+  overflow: hidden;
+}
+.models-header {
+  padding: 0 5%;
+  margin-bottom: 48px;
+}
+.models-track-wrap {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.models-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: scrollTrack 34s linear infinite;
+}
+.models-track:hover { animation-play-state: paused; }
+.model-item {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.35s;
+}
+.model-item:hover { transform: scale(1.025); }
+.models-track:hover .model-item { animation-play-state: paused; }
+.model-item img {
+  height: 380px;
+  width: auto;
+  display: block;
+  object-fit: cover;
+  filter: brightness(0.88) contrast(1.05);
+  transition: filter 0.3s;
+}
+.model-item:hover img { filter: brightness(1.0) contrast(1.0); }
+.model-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 28px 16px 16px;
+  background: linear-gradient(to top, rgba(26,26,26,0.88) 0%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.model-caption-name {
+  font-family: var(--font-head);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--crema);
+  letter-spacing: -0.2px;
+}
+.model-caption-city {
+  font-family: var(--font-head);
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: rgba(245,239,224,0.5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+@keyframes scrollTrack {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* CREDENCIALES */
+.creds-section { background: var(--crema); padding: 56px 5%; }
+.creds-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cred-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 48px;
+  flex: 1;
+  min-width: 220px;
+}
+.cred-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: var(--terracota);
+  opacity: 0.85;
+}
+.cred-text { font-size: 0.88rem; color: rgba(26,26,26,0.65); line-height: 1.6; }
+.cred-text strong { color: var(--charcoal); font-weight: 600; }
+.cred-divider { width: 1px; height: 48px; background: rgba(26,26,26,0.12); flex-shrink: 0; }
+
+/* ARTESANÍAS TEASER */
+.arte-teaser {
+  background: var(--charcoal);
+  padding: 100px 5%;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.arte-teaser-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.arte-teaser-title {
+  font-family: var(--font-head);
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -3px;
+  line-height: 0.95;
+  margin: 12px 0 24px;
+}
+.arte-teaser-desc {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 300;
+  line-height: 1.8;
+  max-width: 400px;
+  margin-bottom: 36px;
+}
+.arte-teaser-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--crema);
+  text-decoration: none;
+  padding: 14px 28px;
+  border: 1px solid rgba(245,239,224,0.25);
+  border-radius: 50px;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.arte-teaser-cta:hover {
+  background: rgba(245,239,224,0.08);
+  border-color: rgba(245,239,224,0.5);
+  transform: translateX(4px);
+}
+.arte-teaser-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.arte-tile {
+  position: relative;
+  border-radius: 16px;
+  min-height: 150px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.arte-tile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+.arte-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+  filter: brightness(0.75);
+}
+.arte-tile:hover img { transform: scale(1.07); filter: brightness(0.65); }
+.arte-tile-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26,26,26,0.75) 0%, transparent 55%);
+}
+.arte-tile-label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: -0.3px;
+  padding: 20px 18px;
+}
+
+/* PROCESO */
+.proceso-section { background: var(--charcoal); padding: 100px 5%; }
+.proceso-inner { max-width: 1200px; margin: 0 auto; }
+.proceso-header { margin-bottom: 60px; }
+.proceso-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+.proceso-step { border-left: 2px solid rgba(181,67,42,0.25); padding-left: 24px; }
+.step-num {
+  font-family: var(--font-head);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(181,67,42,0.2);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.step-title { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 10px; }
+.step-desc { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+/* CTA */
+.cta-section { background: var(--terracota); padding: 100px 5%; text-align: center; }
+.contact-desc {
+  font-size: 1rem;
+  color: rgba(245,239,224,0.8);
+  max-width: 480px;
+  margin: 0 auto 44px;
+  font-weight: 300;
+  line-height: 1.8;
+}
+.contact-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* ── HERO ENTRANCE ANIMATIONS ───────────────────── */
+@keyframes textReveal {
+  from {
+    clip-path: polygon(0 105%, 100% 105%, 100% 105%, 0 105%);
+    transform: translateY(32px);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 105%, 0 105%);
+    transform: translateY(0);
+  }
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes auroraText {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0); transform-origin: top; opacity: 0.8; }
+  50%  { transform: scaleY(1); transform-origin: top; opacity: 0.8; }
+  100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+}
+@keyframes charReveal {
+  from { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+
+.hero-badge {
+  opacity: 0;
+  animation: fadeSlideUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+}
+.hero-tword {
+  display: inline-block;
+  clip-path: polygon(0 105%, 100% 105%, 100% 105%, 0 105%);
+  transform: translateY(32px);
+}
+.hero-tword-la {
+  animation: textReveal 1s cubic-bezier(0.16,1,0.3,1) 0.28s forwards;
+}
+.hero-tword-nik {
+  background: linear-gradient(90deg,
+    var(--terracota) 0%,
+    var(--ocre)      35%,
+    #d4643a          65%,
+    var(--terracota) 100%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation:
+    textReveal 1s  cubic-bezier(0.16,1,0.3,1) 0.46s forwards,
+    auroraText 5s  ease-in-out                 1.6s infinite;
+}
+.hero-subtitle {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.65s forwards;
+}
+.hero-desc {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.80s forwards;
+}
+.hero-actions {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.95s forwards;
+}
+.hero-stats {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16,1,0.3,1) 1.10s forwards;
+}
+.hero-char {
+  display: inline-block;
+  opacity: 0;
+  animation: charReveal 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeSlideUp 0.6s cubic-bezier(0.16,1,0.3,1) 1.5s forwards;
+  pointer-events: none;
+}
+.scroll-hint-line {
+  width: 1px;
+  height: 44px;
+  background: rgba(255,255,255,0.35);
+  animation: scrollDrop 2s ease-in-out 1.8s infinite;
+}
+.scroll-hint-label {
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+@media (max-width: 900px) {
+  .hero-scroll-hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-badge, .hero-tword, .hero-subtitle, .hero-desc,
+  .hero-actions, .hero-stats, .hero-char {
+    animation: none !important;
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+  .hero-tword-nik {
+    -webkit-text-fill-color: var(--terracota);
+    color: var(--terracota);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-image { order: -1; cursor: auto; }
+  .hero-image-inner { animation-play-state: running !important; }
+  .hero-img-main { aspect-ratio: 3/2; }
+  .proceso-grid { grid-template-columns: 1fr 1fr; }
+  .cat-card { width: 260px; }
+  .card-pair { gap: 16px; }
+  .showcase-title { letter-spacing: -1px; }
+  .model-item img { height: 300px; }
+  .arte-teaser-inner { grid-template-columns: 1fr; gap: 48px; }
+}
+@media (max-width: 600px) {
+  .hero { padding: 100px 5% 60px; }
+  .hero-stats { gap: 24px; }
+  .palermo-section { height: 480vh; }
+  .card-pair { flex-direction: column; bottom: 80px; }
+  .cat-card { width: 100%; }
+  .cat-card-img { height: 160px; }
+  .proceso-grid { grid-template-columns: 1fr; }
+  .creds-inner { flex-direction: column; gap: 32px; }
+  .cred-divider { width: 80px; height: 1px; }
+  .cred-item { padding: 0; }
+  .video-showcase { height: 70vh; min-height: 480px; }
+  .showcase-content { padding: 0 6%; }
+  .model-item img { height: 240px; }
+  .models-track { gap: 16px; }
+  .arte-teaser { padding: 64px 5%; }
+  .arte-teaser-grid { grid-template-columns: 1fr 1fr; }
+  .arte-tile { min-height: 100px; }
+}
+</style>

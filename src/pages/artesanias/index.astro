@@ -1,0 +1,407 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { artesanias, categorias } from '../../data/artesanias'
+
+const badgeColor: Record<string, string> = {
+  'Serie Limitada':   'badge--limited',
+  'Últimas unidades': 'badge--last',
+  'Agotado':          'badge--out',
+  'Disponible':       'badge--available',
+  'Encargo':          'badge--encargo',
+}
+
+const total = artesanias.filter(a => a.disponible).length
+---
+
+<BaseLayout
+  title="Artesanías — LaNik Diseño & Tejido"
+  description="Sweaters, chalecos, ponchos, chales, muñecos y pinturas tejidas 100% a mano en Buenos Aires. Cada pieza es única e irrepetible."
+>
+
+  <!-- HERO -->
+  <section class="cat-hero">
+    <div class="cat-hero-inner">
+      <span class="section-tag">Más allá de las gorras</span>
+      <h1 class="cat-hero-title">Arte&shy;sanías</h1>
+      <p class="cat-hero-desc">
+        Sweaters, ponchos, chales, muñecos y pinturas.<br>
+        Todo tejido a mano. Todo irrepetible.
+      </p>
+      <div class="cat-hero-meta">
+        <span>{total} piezas disponibles</span>
+        <span class="meta-dot">·</span>
+        <span>6 categorías</span>
+        <span class="meta-dot">·</span>
+        <span>Envío a todo el país</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTROS -->
+  <section class="filters-bar">
+    <div class="filters-inner">
+      <button class="filter-btn filter-btn--active" data-cat="Todos">Todos</button>
+      {categorias.map(cat => (
+        <button class="filter-btn" data-cat={cat}>{cat}</button>
+      ))}
+    </div>
+  </section>
+
+  <!-- GRILLA -->
+  <section class="arte-section">
+    <div class="arte-grid" id="arteGrid">
+      {artesanias.map(a => (
+        <a
+          href={`/artesanias/${a.id}`}
+          class:list={['product-card', { 'product-card--out': !a.disponible }]}
+          data-cat={a.categoria}
+        >
+          <div class="product-card-img">
+            <img
+              src={a.fotoHero}
+              alt={`LaNik — ${a.nombre}`}
+              loading="lazy"
+            />
+            <div class="product-card-overlay"></div>
+            <span class:list={['product-badge', badgeColor[a.badge] ?? '']}>{a.badge}</span>
+            <span class="product-card-cat">{a.categoria}</span>
+          </div>
+          <div class="product-card-body">
+            <h2 class="product-card-name">{a.nombre}</h2>
+            <p class="product-card-desc">{a.descripcion}</p>
+            <div class="product-card-footer">
+              <span class="product-card-price">
+                {a.precio
+                  ? `$${a.precio.toLocaleString('es-AR')}`
+                  : 'Consultar precio'}
+              </span>
+              <span class="product-card-cta">
+                {a.disponible ? 'Ver pieza →' : 'Ver detalle →'}
+              </span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="emptyState" style="display:none">
+      <p>No hay piezas en esta categoría por el momento.</p>
+      <button class="filter-reset" onclick="document.querySelector('[data-cat=Todos]').click()">
+        Ver todo →
+      </button>
+    </div>
+  </section>
+
+  <!-- INFO STRIP -->
+  <section class="arte-info-strip">
+    <div class="info-strip-inner">
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>Envío a todo el país</span>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Calidad artesanal garantizada</span>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <span>Encargos a medida disponibles</span>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script>
+  const btns = document.querySelectorAll<HTMLButtonElement>('.filter-btn')
+  const cards = document.querySelectorAll<HTMLElement>('[data-cat]')
+  const emptyState = document.getElementById('emptyState')
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat ?? 'Todos'
+
+      btns.forEach(b => b.classList.remove('filter-btn--active'))
+      btn.classList.add('filter-btn--active')
+
+      let visible = 0
+      cards.forEach(card => {
+        if (!card.dataset.cat) return
+        const show = cat === 'Todos' || card.dataset.cat === cat
+        card.style.display = show ? '' : 'none'
+        if (show) visible++
+      })
+
+      if (emptyState) {
+        emptyState.style.display = visible === 0 ? 'flex' : 'none'
+      }
+    })
+  })
+</script>
+
+<style>
+/* HERO */
+.cat-hero {
+  background: var(--charcoal);
+  padding: 140px 5% 80px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.cat-hero-inner { max-width: 1200px; margin: 0 auto; }
+.cat-hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -3px;
+  color: var(--white);
+  line-height: 1;
+  margin: 12px 0 20px;
+}
+.cat-hero-desc {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  line-height: 1.8;
+  max-width: 480px;
+  margin-bottom: 24px;
+}
+.cat-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.5px;
+}
+.meta-dot { color: var(--terracota); }
+
+/* FILTROS */
+.filters-bar {
+  background: var(--charcoal);
+  padding: 0 5% 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: sticky;
+  top: 64px;
+  z-index: 10;
+}
+.filters-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  font-family: var(--font-head);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  padding: 7px 18px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.filter-btn:hover {
+  background: rgba(255,255,255,0.09);
+  color: rgba(255,255,255,0.8);
+}
+.filter-btn--active {
+  background: var(--terracota);
+  border-color: var(--terracota);
+  color: var(--white);
+}
+
+/* GRILLA */
+.arte-section {
+  background: var(--charcoal);
+  padding: 52px 5% 100px;
+}
+.arte-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* CARDS */
+.product-card {
+  display: block;
+  text-decoration: none;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--charcoal-mid);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  border-color: rgba(181,67,42,0.4);
+}
+.product-card--out { opacity: 0.55; }
+
+.product-card-img {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+.product-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+  filter: brightness(0.9) contrast(1.05);
+}
+.product-card:hover .product-card-img img { transform: scale(1.06); }
+.product-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26,26,26,0.7) 0%, transparent 50%);
+}
+
+.product-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.badge--available  { background: rgba(26,26,26,0.75); color: rgba(255,255,255,0.6); }
+.badge--limited    { background: var(--terracota);    color: var(--white); }
+.badge--last       { background: var(--ocre);         color: var(--white); }
+.badge--out        { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.45); }
+.badge--encargo    { background: var(--sage);         color: var(--charcoal); }
+
+.product-card-cat {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  font-family: var(--font-head);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+.product-card-body { padding: 20px 22px 24px; }
+.product-card-name {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.product-card-desc {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 18px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.product-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.product-card-price {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--crema);
+  letter-spacing: -0.5px;
+}
+.product-card-cta {
+  font-family: var(--font-head);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--terracota);
+  transition: letter-spacing 0.2s;
+}
+.product-card:hover .product-card-cta { letter-spacing: 0.5px; }
+
+/* EMPTY STATE */
+.empty-state {
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 80px 0;
+  color: rgba(255,255,255,0.35);
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+}
+.filter-reset {
+  background: none;
+  border: none;
+  color: var(--terracota);
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* INFO STRIP */
+.arte-info-strip {
+  background: var(--charcoal-mid);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 32px 5%;
+}
+.info-strip-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 40px;
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+}
+.info-item svg { color: var(--terracota); flex-shrink: 0; }
+.info-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .arte-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .info-item { padding: 0 20px; }
+  .filters-bar { top: 56px; }
+}
+@media (max-width: 600px) {
+  .cat-hero { padding: 110px 5% 50px; }
+  .arte-grid { grid-template-columns: 1fr; gap: 16px; }
+  .product-card-img { aspect-ratio: 3/2; }
+  .info-strip-inner { flex-direction: column; gap: 20px; }
+  .info-divider { width: 60px; height: 1px; }
+  .info-item { padding: 0; }
+  .filters-bar { top: 0; padding-bottom: 20px; padding-top: 12px; }
+}
+</style>
