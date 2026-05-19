@@ -6,7 +6,7 @@ import vercel from '@astrojs/vercel'
 export default defineConfig({
   site: 'https://lanik-tejidos.vercel.app',
   output: 'server',
-  adapter: vercel(),
+  adapter: vercel({ webAnalytics: { enabled: true } }),
   integrations: [sitemap()],
   devToolbar: { enabled: false },
 })
