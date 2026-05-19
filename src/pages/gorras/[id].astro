@@ -1,4 +1,5 @@
 ---
+export const prerender = true
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { gorras } from '../../data/gorras'
 import { SITE } from '../../data/site'
@@ -20,6 +21,7 @@ const related = gorras.filter(g => g.id !== gorra.id && g.disponible).slice(0, 3
 
 const waUrl = `https://wa.me/${SITE.wa}?text=${encodeURIComponent(gorra.waMessage)}`
 ---
+export const prerender = true
 
 <BaseLayout
   title={`${gorra.nombre} — LaNik Diseño & Tejido`}

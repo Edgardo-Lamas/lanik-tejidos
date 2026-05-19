@@ -1,9 +1,11 @@
 ---
+export const prerender = true
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { SITE } from '../data/site'
 
 const waUrl = `https://wa.me/${SITE.wa}?text=${encodeURIComponent('Hola Nati! Quiero saber más sobre LaNik.')}`
 ---
+export const prerender = true
 
 <BaseLayout
   title="Sobre LaNik — Natalia Szpitalnik · Diseño & Tejido Artesanal"

@@ -1,0 +1,588 @@
+---
+export const prerender = true
+import { gorras } from '../../data/gorras'
+import { artesanias } from '../../data/artesanias'
+
+// ── Stats ──────────────────────────────────────────────────────────
+const totalGorras    = gorras.length
+const gorrasDisp     = gorras.filter(g => g.badge === 'Disponible').length
+const gorrasLimitadas = gorras.filter(g => g.badge === 'Serie Limitada').length
+const gorrasAgotadas  = gorras.filter(g => g.badge === 'Agotado').length
+
+const totalArte      = artesanias.length
+const arteDisp       = artesanias.filter(a => a.badge === 'Disponible').length
+const arteLimitadas  = artesanias.filter(a => a.badge === 'Serie Limitada').length
+const arteAgotadas   = artesanias.filter(a => a.badge === 'Agotado').length
+const arteEncargo    = artesanias.filter(a => a.badge === 'Encargo').length
+
+const totalPiezas    = totalGorras + totalArte
+const totalAgotados  = gorrasAgotadas + arteAgotadas
+const totalLimitadas = gorrasLimitadas + arteLimitadas
+const totalEncargo   = arteEncargo
+
+// Categorías
+const catMap: Record<string, number> = {}
+artesanias.forEach(a => { catMap[a.categoria] = (catMap[a.categoria] || 0) + 1 })
+const categorias = Object.entries(catMap).sort((a, b) => b[1] - a[1])
+const catMax = categorias[0]?.[1] ?? 1
+
+// Alertas de stock (agotado + últimas unidades)
+const alertas = [
+  ...gorras.filter(g => g.badge === 'Agotado' || g.badge === 'Últimas unidades').map(g => ({ nombre: g.nombre, badge: g.badge, tipo: 'Gorra' })),
+  ...artesanias.filter(a => a.badge === 'Agotado' || a.badge === 'Últimas unidades').map(a => ({ nombre: a.nombre, badge: a.badge, tipo: a.categoria })),
+]
+
+// Todos los productos (tabla catálogo)
+const todosCatalogo = [
+  ...gorras.map(g => ({ nombre: g.nombre, categoria: 'Gorra', precio: g.precio, badge: g.badge, disponible: g.disponible, wa: `https://wa.me/5491131986298?text=${encodeURIComponent(g.waMessage)}` })),
+  ...artesanias.map(a => ({ nombre: a.nombre, categoria: a.categoria, precio: a.precio, badge: a.badge, disponible: a.disponible, wa: `https://wa.me/5491131986298?text=${encodeURIComponent(a.waMessage)}` })),
+]
+
+const PIN = '1408' // Cambiar si se desea
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard · LaNik</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    body { background: #111113; color: #F9FAFB; font-family: 'Inter', sans-serif; min-height: 100vh }
+    a { text-decoration: none }
+    button { font-family: inherit; cursor: pointer }
+    @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+    @keyframes blink { 0%,100% { opacity:1 } 50% { opacity:0 } }
+
+    /* PIN */
+    #pin-screen {
+      position: fixed; inset: 0; background: #111113; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pin-box { text-align: center; width: 300px }
+    .pin-logo { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px }
+    .pin-logo span { color: #B5432A }
+    .pin-sub { font-size: 12px; color: #4B5563; margin-bottom: 32px }
+    .pin-input {
+      width: 100%; padding: 12px 16px; background: #1C1C1E;
+      border: 1px solid #3C3C3E; border-radius: 6px;
+      color: #F9FAFB; font-size: 20px; font-weight: 600;
+      text-align: center; letter-spacing: 6px; outline: none; margin-bottom: 12px;
+    }
+    .pin-input:focus { border-color: #B5432A }
+    .pin-btn {
+      width: 100%; padding: 12px; background: #B5432A; color: #fff;
+      border: none; border-radius: 6px; font-size: 14px; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .pin-btn:hover { background: #D0563A }
+    .pin-error { font-size: 12px; color: #EF4444; margin-top: 8px; min-height: 18px }
+
+    /* Layout */
+    #app { display: none; min-height: 100vh }
+    .container { max-width: 1280px; margin: 0 auto; padding: 24px 20px 60px }
+
+    /* Header */
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px }
+    .header-left h1 { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: #F9FAFB; margin-bottom: 2px }
+    .header-left p { font-size: 12px; color: #4B5563 }
+    .header-actions { display: flex; align-items: center; gap: 10px }
+    .btn-ghost {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 4px; border: 1px solid #2C2C2E;
+      background: transparent; color: #6B7280; font-size: 12px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: #D1D5DB; border-color: #3C3C3E }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 2px; margin-bottom: 20px; border-bottom: 1px solid #2C2C2E; padding-bottom: 0 }
+    .tab-btn {
+      padding: 8px 18px; font-size: 13px; font-weight: 500;
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      color: #4B5563; margin-bottom: -1px; transition: color 0.2s;
+    }
+    .tab-btn.active { border-bottom-color: #B5432A; color: #F9FAFB }
+    .tab-btn:hover:not(.active) { color: #9CA3AF }
+    .tab-content { display: none }
+    .tab-content.active { display: flex; flex-direction: column; gap: 14px }
+
+    /* Panel cards */
+    .card {
+      background: #1C1C1E; border: 1px solid #2C2C2E;
+      border-radius: 6px; overflow: hidden;
+    }
+    .card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 16px; border-bottom: 1px solid #2C2C2E;
+    }
+    .card-title { font-size: 12px; font-weight: 600; color: #D1D5DB; letter-spacing: 0.01em }
+    .card-body { padding: 16px }
+
+    /* KPI grid */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px }
+    .kpi {
+      background: #161618; border: 1px solid #2C2C2E;
+      border-radius: 5px; padding: 14px 16px;
+    }
+    .kpi-label { font-size: 11px; color: #6B7280; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px }
+    .kpi-value { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2px }
+    .kpi-sub { font-size: 11px; color: #374151 }
+
+    /* Two-col grid */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr } }
+
+    /* Bar chart (CSS) */
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px }
+    .bar-label { font-size: 12px; color: #D1D5DB; width: 90px; flex-shrink: 0 }
+    .bar-track { flex: 1; height: 6px; background: #1F1F21; border-radius: 3px; overflow: hidden }
+    .bar-fill { height: 100%; border-radius: 3px; background: #B5432A; transition: width 0.6s ease }
+    .bar-count { font-size: 11px; color: #6B7280; width: 24px; text-align: right }
+
+    /* Alert list */
+    .alert-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 0; border-bottom: 1px solid #1F1F21;
+    }
+    .alert-item:last-child { border-bottom: none }
+    .alert-name { font-size: 12px; color: #D1D5DB }
+    .alert-tipo { font-size: 11px; color: #4B5563 }
+
+    /* Badges */
+    .badge { padding: 2px 7px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em }
+    .badge-disponible { background: #22C55E22; color: #22C55E }
+    .badge-limitada { background: #F59E0B22; color: #F59E0B }
+    .badge-ultimas { background: #EF444422; color: #EF4444 }
+    .badge-agotado { background: #37415122; color: #6B7280 }
+    .badge-encargo { background: #8FAF9A22; color: #8FAF9A }
+
+    /* Tabla catálogo */
+    .tabla { width: 100%; border-collapse: collapse; font-size: 12px }
+    .tabla th { padding: 0 12px 10px 0; color: #4B5563; font-weight: 500; text-align: left; border-bottom: 1px solid #2C2C2E; white-space: nowrap }
+    .tabla td { padding: 8px 12px 8px 0; border-bottom: 1px solid #1F1F21; color: #D1D5DB; white-space: nowrap }
+    .tabla tr:last-child td { border-bottom: none }
+    .tabla td.precio { color: #9CA3AF; font-variant-numeric: tabular-nums }
+    .wrap-table { overflow-x: auto }
+
+    /* Agente tab */
+    .agente-header {
+      background: #1C1C1E; border: 1px solid #2C2C2E; border-radius: 6px;
+      padding: 20px; display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .agente-header h2 { font-size: 13px; font-weight: 600; color: #F9FAFB; margin-bottom: 4px }
+    .agente-header p { font-size: 12px; color: #4B5563 }
+    .btn-primary {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 4px; border: none;
+      background: #B5432A; color: #fff; font-size: 13px; font-weight: 600;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .btn-primary:hover { background: #D0563A }
+    .btn-primary:disabled { background: #2C2C2E; color: #6B7280; cursor: not-allowed }
+    .agente-result {
+      background: #1C1C1E; border: 1px solid #2C2C2E;
+      border-radius: 6px; overflow: hidden;
+    }
+    .agente-result-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 16px; border-bottom: 1px solid #2C2C2E;
+    }
+    .agente-result-title { font-size: 12px; font-weight: 600; color: #D1D5DB }
+    .agente-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 4px; line-height: 1.65 }
+    .agente-body .md-h2 { font-size: 13px; font-weight: 700; color: #F9FAFB; margin: 16px 0 6px }
+    .agente-body .md-li { font-size: 13px; color: #9CA3AF; padding-left: 12px; border-left: 2px solid #2C2C2E; margin: 2px 0 }
+    .agente-body .md-p { font-size: 13px; color: #D1D5DB }
+    .agente-empty {
+      background: #161618; border: 1px dashed #2C2C2E; border-radius: 6px;
+      padding: 48px 24px; text-align: center;
+    }
+    .agente-empty p { font-size: 13px; color: #374151 }
+    .cursor {
+      display: inline-block; width: 8px; height: 14px;
+      background: #B5432A; border-radius: 1px;
+      animation: blink 0.8s step-end infinite; margin-left: 2px; vertical-align: middle;
+    }
+    .spin { animation: spin 1s linear infinite }
+
+    /* Ref card */
+    .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px }
+    .ref-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: #161618; border: 1px solid #2C2C2E; border-radius: 4px }
+    .ref-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px }
+    .ref-label { font-size: 11px; color: #4B5563; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px }
+    .ref-val { font-size: 13px; font-weight: 700; margin-bottom: 2px }
+    .ref-desc { font-size: 11px; color: #374151 }
+  </style>
+</head>
+<body>
+
+<!-- PIN SCREEN -->
+<div id="pin-screen">
+  <div class="pin-box">
+    <div class="pin-logo">La<span>Nik</span></div>
+    <p class="pin-sub">Panel de control · Acceso restringido</p>
+    <input id="pin-input" class="pin-input" type="password" maxlength="4" placeholder="••••" autocomplete="off" inputmode="numeric" />
+    <button class="pin-btn" onclick="checkPin()">Ingresar</button>
+    <p class="pin-error" id="pin-error"></p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="app">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <h1>Panel de control</h1>
+        <p>LaNik · Tejidos artesanales · Buenos Aires</p>
+      </div>
+      <div class="header-actions">
+        <a href="/" target="_blank" rel="noopener" class="btn-ghost">Ver sitio ↗</a>
+        <a href="https://vercel.com" target="_blank" rel="noopener" class="btn-ghost">Vercel ↗</a>
+        <button class="btn-ghost" onclick="logout()">Salir</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="panel">Panel</button>
+      <button class="tab-btn" data-tab="catalogo">Catálogo</button>
+      <button class="tab-btn" data-tab="agente">✦ Agente</button>
+    </div>
+
+    <!-- ── PANEL TAB ── -->
+    <div id="tab-panel" class="tab-content active">
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <p class="kpi-label">Total piezas</p>
+          <p class="kpi-value" style="color:#F9FAFB">{totalPiezas}</p>
+          <p class="kpi-sub">{totalGorras} gorras · {totalArte} artesanías</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi-label">Disponibles</p>
+          <p class="kpi-value" style="color:#22C55E">{gorrasDisp + arteDisp}</p>
+          <p class="kpi-sub">Listas para vender</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi-label">Series limitadas</p>
+          <p class="kpi-value" style="color:#F59E0B">{totalLimitadas}</p>
+          <p class="kpi-sub">Alta prioridad de venta</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi-label">Por encargo</p>
+          <p class="kpi-value" style="color:#8FAF9A">{totalEncargo}</p>
+          <p class="kpi-sub">Producción bajo pedido</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi-label">Agotados</p>
+          <p class="kpi-value" style="color:{totalAgotados > 0 ? '#EF4444' : '#374151'}">{totalAgotados}</p>
+          <p class="kpi-sub">{totalAgotados > 0 ? 'Requieren atención' : 'Stock completo'}</p>
+        </div>
+      </div>
+
+      <!-- Categorías + Alertas -->
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Artesanías por categoría</span>
+            <span style="font-size:11px;color:#4B5563">{totalArte} piezas</span>
+          </div>
+          <div class="card-body">
+            {categorias.map(([cat, count]) => (
+              <div class="bar-row">
+                <span class="bar-label">{cat}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" style={`width:${Math.round((count / catMax) * 100)}%`}></div>
+                </div>
+                <span class="bar-count">{count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Alertas de stock</span>
+            <span style="font-size:11px;color:#4B5563">{alertas.length} {alertas.length === 1 ? 'ítem' : 'ítems'}</span>
+          </div>
+          <div class="card-body">
+            {alertas.length === 0 ? (
+              <p style="font-size:12px;color:#374151;text-align:center;padding:16px 0">Sin alertas · stock completo</p>
+            ) : alertas.map(a => (
+              <div class="alert-item">
+                <div>
+                  <p class="alert-name">{a.nombre}</p>
+                  <p class="alert-tipo">{a.tipo}</p>
+                </div>
+                <span class={`badge ${a.badge === 'Agotado' ? 'badge-agotado' : 'badge-ultimas'}`}>{a.badge}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Gorras breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Gorras — estado del stock</span>
+          <span style="font-size:11px;color:#4B5563">{totalGorras} modelos</span>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px">
+            {gorras.map(g => (
+              <a href={`/gorras/${g.id}`} target="_blank" style="display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:#161618;border:1px solid #2C2C2E;border-radius:4px;text-decoration:none;transition:border-color 0.2s" onmouseover="this.style.borderColor='#3C3C3E'" onmouseout="this.style.borderColor='#2C2C2E'">
+                <span style="font-size:12px;color:#D1D5DB;font-weight:500">{g.nombre}</span>
+                <span class={`badge ${g.badge === 'Disponible' ? 'badge-disponible' : g.badge === 'Serie Limitada' ? 'badge-limitada' : g.badge === 'Agotado' ? 'badge-agotado' : 'badge-ultimas'}`} style="align-self:flex-start">{g.badge}</span>
+                <span style="font-size:11px;color:#4B5563">${g.precio.toLocaleString('es-AR')}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Referencia operativa -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">Referencia operativa</span></div>
+        <div class="card-body">
+          <div class="ref-grid">
+            {[
+              { color: '#22C55E', label: 'WhatsApp', val: '+54 9 11 3198-6298', desc: 'Alejandro · canal de ventas' },
+              { color: '#E1306C', label: 'Instagram', val: '@Laniktejidos', desc: 'Canal principal de marca' },
+              { color: '#B5432A', label: 'Email', val: 'laniktejidos@gmail.com', desc: 'Consultas y contacto' },
+              { color: '#8FAF9A', label: 'Zona', val: 'Palermo Soho', desc: 'Buenos Aires · entregas' },
+            ].map(r => (
+              <div class="ref-item">
+                <div class="ref-dot" style={`background:${r.color}`}></div>
+                <div>
+                  <p class="ref-label">{r.label}</p>
+                  <p class="ref-val" style={`color:${r.color}`}>{r.val}</p>
+                  <p class="ref-desc">{r.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── CATÁLOGO TAB ── -->
+    <div id="tab-catalogo" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Catálogo completo</span>
+          <span style="font-size:11px;color:#4B5563">{todosCatalogo.length} productos</span>
+        </div>
+        <div class="card-body">
+          <div class="wrap-table">
+            <table class="tabla">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Estado</th>
+                  <th>WA</th>
+                </tr>
+              </thead>
+              <tbody>
+                {todosCatalogo.map(p => (
+                  <tr>
+                    <td style="color:#F9FAFB;font-weight:500">{p.nombre}</td>
+                    <td style="color:#6B7280">{p.categoria}</td>
+                    <td class="precio">{p.precio ? `$${p.precio.toLocaleString('es-AR')}` : 'Consultar'}</td>
+                    <td>
+                      <span class={`badge ${
+                        p.badge === 'Disponible' ? 'badge-disponible' :
+                        p.badge === 'Serie Limitada' ? 'badge-limitada' :
+                        p.badge === 'Agotado' ? 'badge-agotado' :
+                        p.badge === 'Encargo' ? 'badge-encargo' : 'badge-ultimas'
+                      }`}>{p.badge}</span>
+                    </td>
+                    <td>
+                      <a href={p.wa} target="_blank" rel="noopener" style="color:#25D366;font-size:11px;font-weight:600">WhatsApp ↗</a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AGENTE TAB ── -->
+    <div id="tab-agente" class="tab-content">
+
+      <div class="agente-header">
+        <div>
+          <h2>Agente de Marketing</h2>
+          <p>Analiza el catálogo real y propone acciones concretas para la semana</p>
+        </div>
+        <button id="agente-btn" class="btn-primary" onclick="generarAnalisis()">
+          <svg id="agente-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Generar análisis
+        </button>
+      </div>
+
+      <div id="agente-result" style="display:none" class="agente-result">
+        <div class="agente-result-header">
+          <span id="agente-fecha" class="agente-result-title">Análisis</span>
+          <button onclick="copiarAnalisis()" id="copy-btn" class="btn-ghost" style="font-size:11px;padding:4px 10px">Copiar</button>
+        </div>
+        <div id="agente-body" class="agente-body"></div>
+      </div>
+
+      <div id="agente-empty" class="agente-empty">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2C2C2E" stroke-width="2" style="margin-bottom:12px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <p>Tocá "Generar análisis" para obtener recomendaciones basadas en el catálogo actual</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script define:vars={{ PIN }}>
+  const KEY = 'lanik_dash_auth'
+
+  function checkAuth() {
+    if (localStorage.getItem(KEY) === 'ok') {
+      document.getElementById('pin-screen').style.display = 'none'
+      document.getElementById('app').style.display = 'block'
+    }
+  }
+
+  function checkPin() {
+    const val = document.getElementById('pin-input').value
+    if (val === PIN) {
+      localStorage.setItem(KEY, 'ok')
+      document.getElementById('pin-screen').style.display = 'none'
+      document.getElementById('app').style.display = 'block'
+    } else {
+      document.getElementById('pin-error').textContent = 'PIN incorrecto'
+      document.getElementById('pin-input').value = ''
+      setTimeout(() => { document.getElementById('pin-error').textContent = '' }, 2000)
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem(KEY)
+    location.reload()
+  }
+
+  document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin() })
+
+  // Tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'))
+      btn.classList.add('active')
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active')
+    })
+  })
+
+  // Agente
+  let analisisTexto = ''
+  let isLoading = false
+  let abortCtrl = null
+
+  function renderMarkdown(text) {
+    const el = document.getElementById('agente-body')
+    el.innerHTML = ''
+    const lines = text.split('\n')
+    lines.forEach(line => {
+      if (line.startsWith('## ')) {
+        const p = document.createElement('p')
+        p.className = 'md-h2'
+        p.textContent = line.replace('## ', '')
+        el.appendChild(p)
+      } else if (line.startsWith('- ')) {
+        const p = document.createElement('p')
+        p.className = 'md-li'
+        p.textContent = line.replace('- ', '')
+        el.appendChild(p)
+      } else if (line.trim() === '') {
+        const d = document.createElement('div')
+        d.style.height = '4px'
+        el.appendChild(d)
+      } else {
+        const p = document.createElement('p')
+        p.className = 'md-p'
+        p.textContent = line
+        el.appendChild(p)
+      }
+    })
+  }
+
+  async function generarAnalisis() {
+    if (isLoading) { abortCtrl?.abort(); return }
+    isLoading = true
+    analisisTexto = ''
+
+    const btn = document.getElementById('agente-btn')
+    const icon = document.getElementById('agente-icon')
+    btn.disabled = true
+    btn.innerHTML = '<svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0"/></svg> Analizando…'
+
+    document.getElementById('agente-empty').style.display = 'none'
+    document.getElementById('agente-result').style.display = 'block'
+    document.getElementById('agente-body').innerHTML = '<span class="cursor"></span>'
+    document.getElementById('agente-fecha').textContent = 'Generando análisis…'
+
+    abortCtrl = new AbortController()
+
+    try {
+      const res = await fetch('/api/dashboard/agente', { method: 'POST', signal: abortCtrl.signal })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        document.getElementById('agente-body').innerHTML = `<p class="md-p" style="color:#EF4444">Error: ${err.error || 'No se pudo generar el análisis'}</p>`
+        return
+      }
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        analisisTexto += decoder.decode(value, { stream: true })
+        renderMarkdown(analisisTexto)
+        // Add cursor at end
+        const cursor = document.createElement('span')
+        cursor.className = 'cursor'
+        document.getElementById('agente-body').appendChild(cursor)
+      }
+      renderMarkdown(analisisTexto)
+      const now = new Date().toLocaleString('es-AR', { day:'2-digit', month:'long', hour:'2-digit', minute:'2-digit' })
+      document.getElementById('agente-fecha').textContent = `Análisis generado · ${now}`
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        document.getElementById('agente-body').innerHTML = '<p class="md-p" style="color:#EF4444">Error de conexión. Intentá de nuevo.</p>'
+      }
+    } finally {
+      isLoading = false
+      btn.disabled = false
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Generar análisis'
+    }
+  }
+
+  function copiarAnalisis() {
+    if (!analisisTexto) return
+    navigator.clipboard.writeText(analisisTexto)
+    const btn = document.getElementById('copy-btn')
+    btn.textContent = '✓ Copiado'
+    setTimeout(() => { btn.textContent = 'Copiar' }, 2000)
+  }
+
+  checkAuth()
+</script>
+
+</body>
+</html>
