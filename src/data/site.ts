@@ -1,6 +1,6 @@
 export const SITE = {
   nombre: 'LaNik Diseño & Tejido',
-  url: 'https://edgardo-lamas.github.io/LaNik',
+  url: 'https://lanik-tejidos.vercel.app',
   wa: '5491131986298',
   waDefault: 'Hola LaNik! Me interesa conocer los modelos disponibles.',
   instagram: 'Laniktejidos',
