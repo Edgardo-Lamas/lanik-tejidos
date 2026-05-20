@@ -4,6 +4,22 @@ import { gorras } from '../../../data/gorras'
 import { artesanias } from '../../../data/artesanias'
 import type { APIRoute } from 'astro'
 
+const rateLimit = new Map<string, { count: number; reset: number }>()
+const LIMIT = 20
+const WINDOW_MS = 60_000
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateLimit.get(ip)
+  if (!entry || now > entry.reset) {
+    rateLimit.set(ip, { count: 1, reset: now + WINDOW_MS })
+    return false
+  }
+  if (entry.count >= LIMIT) return true
+  entry.count++
+  return false
+}
+
 function buildContext(): string {
   const gorrasCtx = gorras
     .map(g => `- ${g.nombre} | ${g.badge} | $${g.precio.toLocaleString('es-AR')}`)
@@ -27,7 +43,15 @@ ARTESANÍAS (${artesanias.length} piezas — ${catResumen}): ${arteCtx}
 STOCK: Agotados: ${agotados.join(', ') || 'Ninguno'} | Limitadas: ${limitadas.join(', ')} | Encargo: ${encargos.join(', ')}`
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const ip = clientAddress ?? 'unknown'
+  if (isRateLimited(ip)) {
+    return new Response(JSON.stringify({ error: 'Demasiadas solicitudes. Esperá un momento.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
   const apiKey = import.meta.env.ANTHROPIC_API_KEY
 
   if (!apiKey) {

@@ -47,7 +47,16 @@ export const prerender = true
               src={g.fotoHero}
               alt={`LaNik — ${g.nombre}`}
               loading="lazy"
+              class="img-primary"
             />
+            {g.fotos[1] && (
+              <img
+                src={g.fotos[1]}
+                alt={`LaNik — ${g.nombre}`}
+                loading="lazy"
+                class="img-hover"
+              />
+            )}
             <div class="product-card-overlay"></div>
             <span class:list={['product-badge', badgeColor[g.badge] ?? '']}>{g.badge}</span>
           </div>
@@ -167,13 +176,18 @@ export const prerender = true
   overflow: hidden;
 }
 .product-card-img img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
   filter: brightness(0.9) contrast(1.05);
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-.product-card:hover .product-card-img img { transform: scale(1.06); }
+.img-primary { opacity: 1; transform: scale(1); }
+.img-hover   { opacity: 0; transform: scale(1.06); }
+.product-card:hover .img-primary { opacity: 0; transform: scale(1.06); }
+.product-card:hover .img-hover   { opacity: 1; transform: scale(1); }
 .product-card-overlay {
   position: absolute;
   inset: 0;

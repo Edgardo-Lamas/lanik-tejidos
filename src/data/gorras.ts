@@ -21,10 +21,10 @@ export const gorras: Producto[] = [
     badge: 'Disponible',
     fotos: [
       '/fotos-lanik/mod-1/Mod1-01.jpg',
+      '/fotos-lanik/mod-1/Mod1-05.jpg',
       '/fotos-lanik/mod-1/Mod1-02.jpg',
       '/fotos-lanik/mod-1/Mod1-03.jpg',
       '/fotos-lanik/mod-1/Mod1-04.jpg',
-      '/fotos-lanik/mod-1/Mod1-05.jpg',
     ],
     fotoHero: '/fotos-lanik/mod-1/Mod1-01.jpg',
     disponible: true,
@@ -39,8 +39,8 @@ export const gorras: Producto[] = [
     badge: 'Disponible',
     fotos: [
       '/fotos-lanik/mod-2/Mod2-01.jpg',
-      '/fotos-lanik/mod-2/Mod2-02.jpg',
       '/fotos-lanik/mod-2/Mod2-03.jpg',
+      '/fotos-lanik/mod-2/Mod2-02.jpg',
       '/fotos-lanik/mod-2/Mod2-04.jpg',
     ],
     fotoHero: '/fotos-lanik/mod-2/Mod2-01.jpg',
@@ -71,8 +71,8 @@ export const gorras: Producto[] = [
     badge: 'Disponible',
     fotos: [
       '/fotos-lanik/mod-4/Mod4-01.jpg',
-      '/fotos-lanik/mod-4/Mod4-02.jpg',
       '/fotos-lanik/mod-4/Mod4-03.jpg',
+      '/fotos-lanik/mod-4/Mod4-02.jpg',
     ],
     fotoHero: '/fotos-lanik/mod-4/Mod4-01.jpg',
     disponible: true,
@@ -120,8 +120,8 @@ export const gorras: Producto[] = [
     badge: 'Disponible',
     fotos: [
       '/fotos-lanik/mod-7/Mod7-01.jpg',
-      '/fotos-lanik/mod-7/Mod7-02.jpg',
       '/fotos-lanik/mod-7/Mod7-03.jpg',
+      '/fotos-lanik/mod-7/Mod7-02.jpg',
       '/fotos-lanik/mod-7/Mod7-04.jpg',
     ],
     fotoHero: '/fotos-lanik/mod-7/Mod7-01.jpg',

@@ -58,6 +58,9 @@ const canonicalURL = new URL(Astro.url.pathname, SITE.url)
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+  <!-- Hero image preload (LCP) -->
+  <link rel="preload" as="image" href="/fotos-lanik/hero-lifestyle.jpg" fetchpriority="high" />
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

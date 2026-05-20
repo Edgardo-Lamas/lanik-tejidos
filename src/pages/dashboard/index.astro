@@ -2,6 +2,7 @@
 export const prerender = true
 import { gorras } from '../../data/gorras'
 import { artesanias } from '../../data/artesanias'
+import { SITE } from '../../data/site'
 
 // ── Stats ──────────────────────────────────────────────────────────
 const totalGorras    = gorras.length
@@ -34,11 +35,11 @@ const alertas = [
 
 // Todos los productos (tabla catálogo)
 const todosCatalogo = [
-  ...gorras.map(g => ({ nombre: g.nombre, categoria: 'Gorra', precio: g.precio, badge: g.badge, disponible: g.disponible, wa: `https://wa.me/5491131986298?text=${encodeURIComponent(g.waMessage)}` })),
-  ...artesanias.map(a => ({ nombre: a.nombre, categoria: a.categoria, precio: a.precio, badge: a.badge, disponible: a.disponible, wa: `https://wa.me/5491131986298?text=${encodeURIComponent(a.waMessage)}` })),
+  ...gorras.map(g => ({ nombre: g.nombre, categoria: 'Gorra', precio: g.precio, badge: g.badge, disponible: g.disponible, wa: `https://wa.me/${SITE.wa}?text=${encodeURIComponent(g.waMessage)}` })),
+  ...artesanias.map(a => ({ nombre: a.nombre, categoria: a.categoria, precio: a.precio, badge: a.badge, disponible: a.disponible, wa: `https://wa.me/${SITE.wa}?text=${encodeURIComponent(a.waMessage)}` })),
 ]
 
-const PIN = '1408' // Cambiar si se desea
+const PIN = import.meta.env.DASHBOARD_PIN ?? '1408'
 ---
 
 <!DOCTYPE html>
@@ -47,10 +48,12 @@ const PIN = '1408' // Cambiar si se desea
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard · LaNik</title>
+  <meta name="robots" content="noindex, nofollow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0 }
     body { background: #111113; color: #F9FAFB; font-family: 'Inter', sans-serif; min-height: 100vh }
     a { text-decoration: none }
     button { font-family: inherit; cursor: pointer }
@@ -280,6 +283,7 @@ const PIN = '1408' // Cambiar si se desea
   <div class="pin-box">
     <div class="pin-logo">La<span>Nik</span></div>
     <p class="pin-sub">Panel de control · Acceso restringido</p>
+    <label for="pin-input" class="visually-hidden">Ingresá el PIN de acceso</label>
     <input id="pin-input" class="pin-input" type="password" maxlength="4" placeholder="••••" autocomplete="off" inputmode="numeric" />
     <button class="pin-btn" id="pin-btn">Ingresar</button>
     <p class="pin-error" id="pin-error"></p>

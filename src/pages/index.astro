@@ -5,7 +5,6 @@ import { categorias } from '../data/categorias'
 import { gorras } from '../data/gorras'
 import { SITE } from '../data/site'
 ---
-export const prerender = true
 
 <BaseLayout
   title="LaNik — Diseño & Tejido Artesanal Urbano"
@@ -14,22 +13,40 @@ export const prerender = true
 
   <!-- ─── HERO ─────────────────────────────────────────── -->
   <section class="hero">
+
+    <!-- Spotlight ported from Aceternity UI -->
+    <svg class="hero-spotlight" viewBox="0 0 3787 2842" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g filter="url(#hero-spotlight-filter)">
+        <ellipse cx="1924.71" cy="273.501" rx="1924.71" ry="273.501"
+          transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)"
+          fill="#B5432A" fill-opacity="0.18"/>
+      </g>
+      <defs>
+        <filter id="hero-spotlight-filter" x="0.86" y="0.84" width="3785.16" height="2840.26"
+          filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+          <feGaussianBlur stdDeviation="120" result="effect1_foregroundBlur"/>
+        </filter>
+      </defs>
+    </svg>
+
     <div class="hero-inner">
       <div class="hero-text">
-        <span class="hero-badge">● Tejido Artesanal · Buenos Aires</span>
+        <span class="hero-badge hero-enter" style="--ed:0.1s">● Tejido Artesanal · Buenos Aires</span>
         <h1 class="hero-title">
           <span class="hero-tword hero-tword-la">La</span><span class="hero-tword hero-tword-nik">Nik</span>
         </h1>
         <p class="hero-subtitle">Diseño & Tejido Artesanal</p>
-        <p class="hero-desc">
+        <p class="hero-desc hero-enter" style="--ed:0.5s">
           Cada pieza tejida a mano, punto a punto. Series limitadas con identidad propia.
           Cuando se agota, no hay reposición.
         </p>
-        <div class="hero-actions">
+        <div class="hero-actions hero-enter" style="--ed:0.7s">
           <a href="/gorras" class="btn-primary">Ver colección →</a>
           <a href="/sobre-lanik" class="btn-secondary">Nuestra historia</a>
         </div>
-        <div class="hero-stats">
+        <div class="hero-stats hero-enter" style="--ed:0.9s">
           <div class="stat-item">
             <span class="stat-number">100%</span>
             <span class="stat-label">Tejido a mano</span>
@@ -44,22 +61,23 @@ export const prerender = true
           </div>
         </div>
       </div>
-      <div class="hero-image" id="heroTilt">
+      <div class="hero-image hero-card-entry" id="heroTilt">
         <!-- wrapper float: solo maneja translateY -->
         <div class="hero-float">
           <!-- wrapper tilt: solo maneja rotateX/Y via JS -->
           <div class="hero-image-inner" id="heroInner">
             <img
-              src="/fotos-lanik/mod-3/Mod3-01.jpg"
-              alt="LaNik — Café Azul, gorra tejida artesanal con etiqueta visible"
+              src="/fotos-lanik/hero-lifestyle.jpg"
+              alt="LaNik — gorra tejida artesanal terracota, fotografía editorial de estudio"
               class="hero-img-main"
               fetchpriority="high"
+              loading="eager"
             />
             <div class="hero-image-shine" id="heroShine"></div>
             <div class="hero-img-overlay">
               <div>
-                <div class="hero-img-tag">Disponible ahora</div>
-                <div class="hero-img-title">Café Azul</div>
+                <div class="hero-img-tag">Tejido a mano</div>
+                <div class="hero-img-title">Terracota · Serie Otoño</div>
               </div>
               <div class="hero-badge-ltd">Serie Ltd.</div>
             </div>
@@ -78,8 +96,9 @@ export const prerender = true
     <div class="video-showcase-inner">
       <video
         class="showcase-video"
-        src="/fotos-canva/video-hero.mp4"
-        autoplay muted loop playsinline
+        data-src="/fotos-canva/video-hero.mp4"
+        poster="/fotos-canva/video-poster.jpg"
+        muted loop playsinline
         aria-hidden="true"
       ></video>
       <div class="showcase-overlay"></div>
@@ -196,7 +215,7 @@ export const prerender = true
         ].map((m, i) => (
           <div class="model-item" aria-hidden={i >= 5 ? 'true' : undefined}>
             <img
-              src={`/fotos-canva/model/gorra-model-${m.img}.png`}
+              src={`/fotos-canva/model/gorra-model-${m.img}.webp`}
               alt={i < 5 ? `Modelo con gorra LaNik ${m.nombre}` : ''}
               loading="lazy"
             />
@@ -381,9 +400,7 @@ export const prerender = true
   const pairs   = Array.from(document.querySelectorAll<HTMLElement>('.card-pair'))
   const dots    = Array.from(document.querySelectorAll<HTMLElement>('.pager-dot'))
 
-  if (!section || !bg || pairs.length === 0) {
-    console.warn('LaNik: palermo elements not found')
-  } else {
+  if (section && bg && pairs.length > 0) {
     const N    = pairs.length   // 3
     const STEP = 1 / N          // 0.333 — cada par ocupa 1/3 del scroll total
     const FADE = STEP * 0.22    // zona de crossfade = 22% de cada segmento
@@ -440,6 +457,22 @@ export const prerender = true
 </script>
 
 <script>
+  /* ── VIDEO LAZY LOAD ────────────────────────────── */
+  const lazyVideo = document.querySelector<HTMLVideoElement>('video[data-src]')
+  if (lazyVideo) {
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const v = entry.target as HTMLVideoElement
+          v.src = v.dataset.src!
+          v.play().catch(() => {})
+          videoObserver.unobserve(v)
+        }
+      })
+    }, { rootMargin: '200px' })
+    videoObserver.observe(lazyVideo)
+  }
+
   /* ── SUBTITLE CHAR STAGGER ──────────────────────── */
   const sub = document.querySelector<HTMLElement>('.hero-subtitle')
   if (sub) {
@@ -471,12 +504,50 @@ export const prerender = true
   overflow: hidden;
   background: var(--charcoal);
 }
+
+/* ── Spotlight (Aceternity port) ── */
+.hero-spotlight {
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+  top: -20%;
+  left: -30%;
+  width: 130%;
+  height: 160%;
+  opacity: 0;
+  animation: heroSpotlight 1.6s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+}
+@keyframes heroSpotlight {
+  0%   { opacity: 0; transform: translate(-8%, -15%) rotate(-5deg); }
+  100% { opacity: 1; transform: translate(0%, 0%) rotate(0deg); }
+}
+
+/* ── Entrada de elementos de texto ── */
+@keyframes heroEnter {
+  0%   { opacity: 0; transform: translateY(22px); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0);    filter: blur(0px); }
+}
+.hero-enter {
+  opacity: 0;
+  animation: heroEnter 0.7s cubic-bezier(0.16,1,0.3,1) var(--ed, 0s) forwards;
+}
+
+/* ── Entrada cinematográfica de la tarjeta ── */
+@keyframes cardReveal {
+  0%   { opacity: 0; transform: translateY(60px) scale(0.94); filter: blur(8px); }
+  60%  { filter: blur(0px); }
+  100% { opacity: 1; transform: translateY(0)    scale(1);    filter: blur(0px); }
+}
+.hero-card-entry {
+  animation: cardReveal 1.1s cubic-bezier(0.16,1,0.3,1) 0.35s both;
+}
+
 .hero::before {
   content: '';
   position: absolute;
   top: -200px; right: -200px;
   width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(181,67,42,0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(181,67,42,0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 .hero-inner {
@@ -1107,7 +1178,7 @@ export const prerender = true
   font-family: var(--font-head);
   font-size: 2.5rem;
   font-weight: 700;
-  color: rgba(181,67,42,0.2);
+  color: rgba(181,67,42,0.7);
   line-height: 1;
   margin-bottom: 16px;
 }

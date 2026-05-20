@@ -26,7 +26,6 @@ export const GET: APIRoute = ({ url }) => {
   const challenge = url.searchParams.get('hub.challenge')
 
   if (mode === 'subscribe' && token === WHATSAPP_VERIFY_TOKEN) {
-    console.log('[LaNik WA] Webhook verificado ✓')
     return new Response(challenge, { status: 200 })
   }
 
@@ -41,6 +40,15 @@ export const POST: APIRoute = async ({ request }) => {
   } catch {
     return new Response('Invalid JSON', { status: 400 })
   }
+
+  try {
+    return await handleMessage(body)
+  } catch {
+    return new Response('Internal error', { status: 500 })
+  }
+}
+
+async function handleMessage(body: any): Promise<Response> {
 
   // Confirmar recepción a Meta inmediatamente
   const entry   = body?.entry?.[0]
@@ -62,14 +70,10 @@ export const POST: APIRoute = async ({ request }) => {
   const userText = msg.text.body.trim()
   const from     = msg.from // número en formato internacional sin "+"
 
-  console.log(`[LaNik WA] Mensaje de ${from}: "${userText}"`)
-
-  // Llamar a Claude con el system prompt completo
   try {
     const reply = await callClaude(userText)
     await sendWhatsApp(from, reply)
-  } catch (err) {
-    console.error('[LaNik WA] Error:', err)
+  } catch {
     await sendWhatsApp(from, 'Hubo un problema, te respondo en un momento. Podés escribirnos directamente a este WhatsApp 🙏')
   }
 

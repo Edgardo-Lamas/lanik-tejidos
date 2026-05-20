@@ -1,4 +1,6 @@
 ---
+import { SITE } from '../data/site'
+
 const links = [
   { href: '/gorras',      label: 'Gorras' },
   { href: '/artesanias',  label: 'Artesanías' },
@@ -20,8 +22,8 @@ const current = Astro.url.pathname
     ))}
   </ul>
 
-  <a href="https://wa.me/5491131986298?text=Hola%20LaNik!%20Me%20interesa%20conocer%20los%20modelos%20disponibles."
-     class="nav-cta" target="_blank" data-track="click_whatsapp">
+  <a href={`https://wa.me/${SITE.wa}?text=${encodeURIComponent(SITE.waDefault)}`}
+     class="nav-cta" target="_blank" rel="noopener" data-track="click_whatsapp">
     Consultar
   </a>
 
@@ -31,7 +33,7 @@ const current = Astro.url.pathname
 
   <div class="nav-mobile-menu">
     {links.map(l => <a href={l.href}>{l.label}</a>)}
-    <a href="https://wa.me/5491131986298?text=Hola%20LaNik!" class="nav-mobile-cta" target="_blank">
+    <a href={`https://wa.me/${SITE.wa}?text=${encodeURIComponent(SITE.waDefault)}`} class="nav-mobile-cta" target="_blank" rel="noopener">
       Consultar por WhatsApp
     </a>
   </div>

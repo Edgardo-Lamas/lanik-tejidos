@@ -1,8 +1,9 @@
 ---
+import { SITE } from '../data/site'
 ---
 <div class="wa-float">
   <a
-    href="https://wa.me/5491131986298?text=Hola%20LaNik!%20Me%20interesa%20conocer%20los%20modelos%20disponibles."
+    href={`https://wa.me/${SITE.wa}?text=${encodeURIComponent(SITE.waDefault)}`}
     class="wa-btn"
     target="_blank"
     rel="noopener"
